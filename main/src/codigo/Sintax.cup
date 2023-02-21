@@ -1,0 +1,41 @@
+
+package codigo;
+
+import java_cup.runtime.Symbol;
+
+parser code
+{:
+    private Symbol s;
+    
+    public void syntax_error(Symbol s){
+        this.s = s;
+    }
+
+    public Symbol getS(){
+        return this.s;
+}
+:};
+
+terminal Linea,  Llave_a, Llave_c, P_coma,Conjunto,Porcentaje,D_puntos,Guion,Mayor,Comilla_s,Comillas,Punto, Identificador,Numero, ERROR;
+non terminal INICIO, SENTENCIA,DECLARACION, EXPRESION;
+
+start with INICIO;
+
+INICIO ::= 
+    Llave_a SENTENCIA DECLARACION Porcentaje Porcentaje  EXPRESION Llave_c
+;
+SENTENCIA ::= 
+   SENTENCIA Conjunto D_puntos Identificador Guion Mayor Identificador P_coma |
+   Conjunto D_puntos Identificador Guion Mayor Identificador P_coma
+;
+
+DECLARACION ::= 
+       DECLARACION Identificador Guion Mayor Identificador P_coma |
+       Identificador Guion Mayor Identificador P_coma
+;
+EXPRESION ::=
+        Identificador D_puntos Comillas Identificador Comillas P_coma |
+         Identificador D_puntos Comillas Numero Comillas P_coma |
+        EXPRESION  Identificador D_puntos Comillas Identificador Comillas P_coma 
+
+;
