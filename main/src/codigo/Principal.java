@@ -22,7 +22,7 @@ public class Principal {
     }
         public static void generarLexer(String ruta1, String ruta2, String [] rutaS) throws IOException, Exception{
            File archivo;
-           archivo = new File(ruta1);
+            archivo = new File(ruta1);
            JFlex.Main.generate(archivo);
            archivo = new File(ruta2);
            JFlex.Main.generate(archivo);

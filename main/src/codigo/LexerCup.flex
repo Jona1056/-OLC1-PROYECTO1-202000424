@@ -1,5 +1,6 @@
 
 package codigo;
+import Arbol.main;
 import java_cup.runtime.Symbol;
 %%
 %class LexerCup
@@ -8,10 +9,14 @@ import java_cup.runtime.Symbol;
 %full
 %line
 %char
-L=[a-zA-Z]+
+L=[a-zA-Z_$]+
 D=[0-9]+
+c=[\"]
+S=[!-}]+
+J=[!-/ :-` {-}]+
 
-s=[!-&]+
+
+STR = "\"" [^\"\n]+ "\""
 espacio=[ ,\t,\r,\n]+
 %{
      private Symbol symbol(int type, Object value){
@@ -28,11 +33,6 @@ espacio=[ ,\t,\r,\n]+
 
 
 
-/* Espacios en blanco */
-{espacio} {/*Ignore*/}
-
-/* Comentarios */
-( "//"(.)* ) {/*Ignore*/}
 
 /* CONJUNTO*/
 ( "CONJ" ) {return new Symbol(sym.Conjunto, yychar, yyline, yytext());}
@@ -52,8 +52,7 @@ espacio=[ ,\t,\r,\n]+
 /* Llave de cierre */
 ( "}" ) {return new Symbol(sym.Llave_c, yychar, yyline, yytext());}
 
-/* Comillas */
-( "\"" ) {return new Symbol(sym.Comillas, yychar, yyline, yytext());}
+
 
 /* GUION*/
 ( "-" ) {return new Symbol(sym.Guion, yychar, yyline, yytext());}
@@ -68,23 +67,42 @@ espacio=[ ,\t,\r,\n]+
 ( "\'" ) {return new Symbol(sym.Comilla_s, yychar, yyline, yytext());}
 
 
+/* PUNTO*/
+( "." ) {return new Symbol(sym.PUNTO1, yychar, yyline, yytext());}
 
 
-/* punto */
-( "." ) {return new Symbol(sym.Punto, yychar, yyline, yytext());}
+/*KLEENE*/
+( "*" ) {return new Symbol(sym.KLEENE, yychar, yyline, yytext());}
+
+/*INTEROGGACION*/
+( "?" ) {return new Symbol(sym.Interrogacion, yychar, yyline, yytext());}
+
+/* OR*/
+( "|" ) {return new Symbol(sym.OR, yychar, yyline, yytext());}
+
+/* SUMA*/
+( "+" ) {return new Symbol(sym.SUMA, yychar, yyline, yytext());}
+
+( "\"" ) {return new Symbol(sym.COMILLAS, yychar, yyline, yytext());}
 
 
+/* Espacios en blanco */
+{espacio} {/*Ignore*/}
 
+/* Comentarios */
+( "//"(.)* ) {/*Ignore*/}
+"<!"(.|\n)*?"!>" {/*Ignore*/}
+/* IDENTIFICADOR */
 
-
-
-
-
-/* Identificador */
 {L}({L}|{D})* {return new Symbol(sym.Identificador, yychar, yyline, yytext());}
 
-/* Numero */
-("(-"{D}+")")|{D}+ {return new Symbol(sym.Numero, yychar, yyline, yytext());}
+{L}"~"{L} {return new Symbol(sym.CON, yychar, yyline, yytext());}
+{J}"~"{J} {return new Symbol(sym.CON, yychar, yyline, yytext());}
+{D}"~"{D} {return new Symbol(sym.CON, yychar, yyline, yytext());}
+{c}({S}|{L}){c} {return new Symbol(sym.Oracion, yychar, yyline, yytext());}
+({L})("\,"({L}|{D}))* {return new Symbol(sym.CON, yychar, yyline, yytext());}
+({D})("\,"({D}|{L}))* {return new Symbol(sym.CON, yychar, yyline, yytext());}
+"\"" [^\"\n]+ "\"" {return new Symbol(sym.Oracion2, yychar, yyline, yytext());}
 
 /* Error de analisis */
  . {return new Symbol(sym.ERROR, yychar, yyline, yytext());}

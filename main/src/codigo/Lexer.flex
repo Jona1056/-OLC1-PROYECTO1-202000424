@@ -1,42 +1,72 @@
 
 package codigo;
-import static codigo.Tokens.*;
+import Arbol.main;
+import java_cup.runtime.Symbol;
 %%
 %class Lexer
-%type Tokens
-L=[a-zA-Z]+
+
+%line 
+%char 
+%cup 
+%unicode
+%ignorecase
+
+L=[a-zA-Z_$]+
 D=[0-9]+
-c=[\"]
- 
+c=[\"]+
+
+S=[!-}]
+J=[!-/ :-` {-}]
 
 
-espacio=[ ,\t,\r]+
-%{
-    public String lexeme;
-%}
+%init{ 
+    yyline = 1; 
+    yychar = 1; 
+%init}
+
+STR = "\"" [^\"\n]+ "\""
+
+espacio=[ ,\t,\r,\n]+
+
+
 %%
-"\n" {lexeme=yytext(); return Linea;}
-"CONJ" {lexeme=yytext(); return Conjunto;}
-"%" {lexeme=yytext(); return Porcentaje;}
-":" {lexeme=yytext(); return D_puntos;}
-";" {lexeme=yytext(); return P_coma;}
-"{" {lexeme=yytext(); return Llave_a;}
-"}" {lexeme=yytext(); return Llave_c;}
-"\"" {lexeme=yytext(); return Comillas;}
-"-" {lexeme=yytext(); return Guion;}
-">" {lexeme=yytext(); return Mayor;}
-"," {lexeme=yytext(); return Coma;}
-"'" {lexeme=yytext(); return Comilla_s;}
-"." {lexeme=yytext(); return Punto;}
-"~" {lexeme=yytext(); return Separador;}
+
+"CONJ" {return new Symbol(sym.Conjunto,yyline,yychar, yytext());} 
+"%" {return new Symbol(sym.Porcentaje,yyline,yychar, yytext());} 
+":" {return new Symbol(sym.D_puntos,yyline,yychar, yytext());} 
+";" {return new Symbol(sym.P_coma,yyline,yychar, yytext());} 
+"{" {return new Symbol(sym.Llave_a,yyline,yychar, yytext());} 
+"}" {return new Symbol(sym.Llave_c,yyline,yychar, yytext());} 
+"?" {return new Symbol(sym.Interrogacion,yyline,yychar, yytext());} 
+"-" {return new Symbol(sym.Guion,yyline,yychar, yytext());} 
+">" {return new Symbol(sym.Mayor,yyline,yychar, yytext());} 
+
+"'" {return new Symbol(sym.Comilla_s,yyline,yychar, yytext());} 
+
+"." {return new Symbol(sym.PUNTO1,yyline,yychar, yytext());} 
+"*" {return new Symbol(sym.KLEENE,yyline,yychar, yytext());} 
+"|" {return new Symbol(sym.OR,yyline,yychar, yytext());} 
+"+" {return new Symbol(sym.SUMA,yyline,yychar, yytext());} 
+{L}({L}|{D})* {return new Symbol(sym.Identificador, yychar, yyline, yytext());}
+{L}"~"{L} {return new Symbol(sym.CON, yychar, yyline, yytext());}
+{J}"~"{J} {return new Symbol(sym.CON, yychar, yyline, yytext());}
+{D}"~"{D} {return new Symbol(sym.CON, yychar, yyline, yytext());}
+"\""({S}|{L})"\"" {return new Symbol(sym.Oracion, yychar, yyline, yytext());}
+"\"" [^\"\n]+ "\"" {return new Symbol(sym.Oracion2, yychar, yyline, yytext());}
+({L})("\,"({L}|{D}))* {return new Symbol(sym.CON, yychar, yyline, yytext());}
+({D})("\,"({D}|{L}))* {return new Symbol(sym.CON, yychar, yyline, yytext());}
+\n {yychar=1;}
+{espacio} {}
+"//".* {}
+"<!"(.|\n)*?"!>" {}
 
 
-{espacio} {/*Ignore*/}
-"//".* {/*Ignore*/}
-"<!"(.|\n)"!>" {/*Ignore*/}
-"<!"(.|\n)*?"!>" {/*Ignore*/}
-{c}.+{c} {lexeme=yytext(); return Oracion;}
-{L}({L}|{D})* {lexeme=yytext(); return Identificador;}
-("(-"{D}+")")|{D}+ {lexeme=yytext(); return Numero;}
 
- . {return ERROR;}
+
+  
+
+
+ . {  
+   Errores.addErrores(yytext().toString(),yyline,yychar,"LEXICO",yytext().toString());
+
+System.out.println("Este es un error lexico: "+yytext() + ", en la linea: "+yyline+", en la columna: "+yychar);}

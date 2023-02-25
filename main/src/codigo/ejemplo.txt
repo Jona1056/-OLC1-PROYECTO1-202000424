@@ -1,0 +1,13 @@
+
+{
+CONJ: nuevo -> a~z;
+
+EXPreg -> .|{nuevo} "2" * {nuevo};
+%%
+// pruebas 
+<! comentario multilinea
+asdasdasdasd
+asdsad!>
+EXPreg: "este es un lexema";
+
+}

@@ -1,41 +1,118 @@
 
 package codigo;
-
-import java_cup.runtime.Symbol;
+import Arbol.main;
+import java_cup.runtime.*;
+import java.util.ArrayList;
+import java.util.List;
 
 parser code
 {:
-    private Symbol s;
-    
-    public void syntax_error(Symbol s){
-        this.s = s;
-    }
 
-    public Symbol getS(){
-        return this.s;
-}
+
+    
+
+    /**
+     * Método al que se llama automáticamente ante algún error sintactico.
+     **/ 
+    public void syntax_error(Symbol s){ 
+        System.out.println("Error Sintáctico en la Línea " + (s.left) +
+        " Columna "+s.right+ ". No se esperaba este componente: " +s.value+"."); 
+         Errores.addErrores(s.value.toString(),s.left,s.right,"SINTACTICO","El Caracter " + s.value.toString()+" que se ingreso no es permitido,revise la escritura de su Oracion");
+    } 
+
+    /**
+     * Método al que se llama automáticamente ante algún error sintáctico 
+     * en el que ya no es posible una recuperación de errores.
+     **/ 
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
+        System.out.println("Error síntactico irrecuperable en la Línea " + 
+        (s.left)+ " Columna "+s.right+". Componente " + s.value + 
+        " no reconocido."); 
+    }  
+
+
+  
 :};
 
-terminal Linea,  Llave_a, Llave_c, P_coma,Conjunto,Porcentaje,D_puntos,Guion,Mayor,Comilla_s,Comillas,Punto, Identificador,Numero, ERROR;
-non terminal INICIO, SENTENCIA,DECLARACION, EXPRESION;
+terminal Llave_a, Llave_c, Conjunto, Guion, Mayor, D_puntos, Identificador,ERROR,Comilla_s,P_coma,Porcentaje,COMILLAS, Interrogacion,CON, PUNTO1, KLEENE, OR,SUMA,Oracion,Oracion2;
+non terminal INICIO,INI,INI2,EXPRESIONES,CONJUNTOS,FINAL,FINAL1,INI4,INI3,CREACION,ORACIONES;
 
 start with INICIO;
 
 INICIO ::= 
-    Llave_a SENTENCIA DECLARACION Porcentaje Porcentaje  EXPRESION Llave_c
-;
-SENTENCIA ::= 
-   SENTENCIA Conjunto D_puntos Identificador Guion Mayor Identificador P_coma |
-   Conjunto D_puntos Identificador Guion Mayor Identificador P_coma
-;
-
-DECLARACION ::= 
-       DECLARACION Identificador Guion Mayor Identificador P_coma |
-       Identificador Guion Mayor Identificador P_coma
-;
-EXPRESION ::=
-        Identificador D_puntos Comillas Identificador Comillas P_coma |
-         Identificador D_puntos Comillas Numero Comillas P_coma |
-        EXPRESION  Identificador D_puntos Comillas Identificador Comillas P_coma 
+        INI
+        
 
 ;
+INI::=
+Llave_a INI2 |
+error INI2
+
+
+
+;
+INI2::=
+ CONJUNTOS INI3  
+    |error INI2
+;
+INI3::=
+Porcentaje Porcentaje INI4
+
+    |error INI3
+
+
+
+;
+INI4 ::=
+ORACIONES FINAL1
+| error INI4
+;
+
+CONJUNTOS ::= CONJUNTOS Conjunto D_puntos Identificador:a Guion Mayor CON:b P_coma    {:resultados.addconj(a,b);:}
+            |    Conjunto D_puntos Identificador:a  Guion Mayor CON:b P_coma    {:resultados.addconj(a,b);:}
+    |   CONJUNTOS  Identificador Guion Mayor CREACION:B P_coma      {:System.out.print(B);:} 
+    | Identificador Guion Mayor CREACION P_coma   
+ 
+  ;
+FINAL1 ::=
+FINAL
+;
+
+
+FINAL ::=
+    Llave_c
+    | error FINAL
+;
+
+
+CREACION ::=
+      CREACION PUNTO1  {:System.out.print(".");:} 
+      | CREACION KLEENE {:System.out.print("*");:} 
+      | CREACION OR {:System.out.print("|");:} 
+      | CREACION Oracion:b  {:System.out.print(b);:} 
+      | CREACION SUMA {:System.out.print("+");:} 
+      | CREACION Llave_a Identificador:d Llave_c {:System.out.print("{"+d+"}");  main.hola();:}
+      | CREACION Interrogacion {:System.out.print("?");:} 
+
+
+      | PUNTO1 {:System.out.println(".");:}
+      | KLEENE  {:System.out.println("*");:}
+      | OR {:System.out.println("|");:}
+      | SUMA {:System.out.println("+");:}
+      | Oracion:b {:System.out.print(b);:}   
+      | Llave_a Identificador:c Llave_c {:System.out.print("{"+c+"}");:}
+      | Interrogacion  {:System.out.print("?");:} 
+ 
+ 
+      
+  
+;
+
+ORACIONES ::=
+
+    ORACIONES Identificador D_puntos Oracion2 P_coma     
+    | Identificador D_puntos Oracion2 P_coma
+ 
+;
+
+

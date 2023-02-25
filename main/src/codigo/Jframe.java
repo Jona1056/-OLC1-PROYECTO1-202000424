@@ -3,8 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package codigo;
-
 import java.awt.Color;
+import java.awt.List;
+import codigo.ErrorHTML;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -12,6 +13,10 @@ import java.io.StringReader;
 import java.nio.file.Files;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java_cup.runtime.Symbol;
 import javax.swing.JFileChooser;
 
 /**
@@ -33,27 +38,18 @@ public class Jframe extends javax.swing.JFrame {
     private void analizarLexico() throws IOException{
         int cont = 1;
         String expr = (String) Area1.getText();
-        Lexer lexer = new Lexer(new StringReader(expr));
-        String resultado = "Linea" + cont  + " \t\tSimbolo\n";
-        while (true){
-            Tokens token = lexer.yylex();
-            if(token == null){
-                txtResultado.setText(resultado);
-                return;
-            }
-            switch(token){
-                case Linea: 
-                    cont++;
-                    resultado += "Linea"+ cont + "\n";
-                    break;
-                case Identificador:
-                    resultado += " <Identificador>\t" + lexer.lexeme + " \n";
-                    break;
-                case Oracion:
-                    resultado += " <Oracion>" + lexer.lexeme + " \n";
-                    break;
-            }
-        }
+       
+        codigo.Sintax pars;
+        try {
+            pars=new codigo.Sintax(new codigo.Lexer(new StringReader(expr)));
+            pars.parse();        
+            
+        } catch (Exception ex) {
+            System.out.println("Error fatal en compilación de entrada.");
+            System.out.println("Causa: "+ex.getCause());
+        } 
+       
+      
         }
     
 
@@ -137,6 +133,11 @@ public class Jframe extends javax.swing.JFrame {
         jScrollPane2.setViewportView(txtResultado);
 
         jButton1.setText("Generar Automata");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Analizar Entrada");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -159,10 +160,25 @@ public class Jframe extends javax.swing.JFrame {
         );
 
         jButton3.setText("Arboles");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         Siguientes.setText("Siguientes");
+        Siguientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SiguientesActionPerformed(evt);
+            }
+        });
 
         Transiciones.setText("Transiciones");
+        Transiciones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TransicionesActionPerformed(evt);
+            }
+        });
 
         jButton6.setText("Automatas");
 
@@ -184,9 +200,9 @@ public class Jframe extends javax.swing.JFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(layout.createSequentialGroup()
-                                                .addGap(101, 101, 101)
+                                                .addGap(129, 129, 129)
                                                 .addComponent(jButton1)
-                                                .addGap(56, 56, 56)
+                                                .addGap(28, 28, 28)
                                                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 462, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 155, Short.MAX_VALUE))
@@ -213,9 +229,9 @@ public class Jframe extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -225,7 +241,7 @@ public class Jframe extends javax.swing.JFrame {
                                     .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(Siguientes, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(16, 16, 16)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -262,6 +278,45 @@ public class Jframe extends javax.swing.JFrame {
             Logger.getLogger(Jframe.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String ST = Area1.getText();
+        Sintax s = new Sintax(new codigo.Lexer(new StringReader(ST)));
+        resultados.Conjun.clear();
+        Errores.L_errores.clear();
+        ErrorHTML.Errores = "";
+        try {
+            s.parse();
+            
+        
+               txtResultado.setText("analisis realizado");
+        } catch (Exception ex) {
+             txtResultado.setText("error");
+            Logger.getLogger(Jframe.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(Errores.L_errores.isEmpty()){
+            System.out.println("No hay Errores en esta archivo");
+        }
+        else{
+              ErrorHTML.Imprimir_errores();
+              ErrorHTML.main();
+              ErrorHTML.Apertura();
+        }
+     
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        resultados.imprimir();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void SiguientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SiguientesActionPerformed
+            Errores.ImprimirErrores();        // TODO add your handling code here:
+    }//GEN-LAST:event_SiguientesActionPerformed
+
+    private void TransicionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TransicionesActionPerformed
+            
+    }//GEN-LAST:event_TransicionesActionPerformed
 
     /**
      * @param args the command line arguments
