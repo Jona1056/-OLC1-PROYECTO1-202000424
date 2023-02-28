@@ -9,8 +9,9 @@ package Arbol;
  * @author Jonatan Garcia
  */
 import java.util.ArrayList;
+
 public class followTable {
-     public void append(int numNode, String lexeme, ArrayList flwList, ArrayList<ArrayList> table){
+    public void append(int numNode, String lexeme, ArrayList flwList, ArrayList<ArrayList> table){
         for (ArrayList item : table){
             if( (int) item.get(0) == numNode && item.get(1) == lexeme ){
                 for (Object flwItem : flwList){

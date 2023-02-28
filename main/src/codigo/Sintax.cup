@@ -70,12 +70,12 @@ ORACIONES FINAL1
 
 CONJUNTOS ::= CONJUNTOS Conjunto D_puntos Identificador:a Guion Mayor CON:b P_coma    {:resultados.addconj(a,b);:}
             |    Conjunto D_puntos Identificador:a  Guion Mayor CON:b P_coma    {:resultados.addconj(a,b);:}
-    |   CONJUNTOS  Identificador Guion Mayor CREACION:B P_coma      {:System.out.print(B);:} 
-    | Identificador Guion Mayor CREACION P_coma   
+    |   CONJUNTOS  Identificador:y Guion Mayor CREACION:x P_coma {:main.Arbol(x.toString(),y.toString());:}
+    | Identificador:y Guion Mayor CREACION:x P_coma    {:main.Arbol(x.toString(),y.toString());:}
  
   ;
 FINAL1 ::=
-FINAL
+FINAL 
 ;
 
 
@@ -86,23 +86,16 @@ FINAL ::=
 
 
 CREACION ::=
-      CREACION PUNTO1  {:System.out.print(".");:} 
-      | CREACION KLEENE {:System.out.print("*");:} 
-      | CREACION OR {:System.out.print("|");:} 
-      | CREACION Oracion:b  {:System.out.print(b);:} 
-      | CREACION SUMA {:System.out.print("+");:} 
-      | CREACION Llave_a Identificador:d Llave_c {:System.out.print("{"+d+"}");  main.hola();:}
-      | CREACION Interrogacion {:System.out.print("?");:} 
+       PUNTO1 CREACION:a CREACION:b {:System.out.print("."+""+a+""+b+""); RESULT="."+a+b;:} 
+      |KLEENE CREACION:b {:System.out.print("*"); RESULT="*"+b;:} 
+      | OR CREACION:a CREACION:b {:System.out.print("|"); RESULT="|"+a+b;:} 
+      | Oracion:b {:System.out.print(b); RESULT=b;:} 
+      | SUMA CREACION:b{:System.out.print("+");  RESULT="+"+b;:} 
+      | Llave_a Identificador:d Llave_c {:System.out.print("{"+d+"}"); RESULT="{"+d+"}"  ;:}
+      |  Interrogacion CREACION:b {:System.out.print("?"); RESULT="?"+b;:} 
 
 
-      | PUNTO1 {:System.out.println(".");:}
-      | KLEENE  {:System.out.println("*");:}
-      | OR {:System.out.println("|");:}
-      | SUMA {:System.out.println("+");:}
-      | Oracion:b {:System.out.print(b);:}   
-      | Llave_a Identificador:c Llave_c {:System.out.print("{"+c+"}");:}
-      | Interrogacion  {:System.out.print("?");:} 
- 
+
  
       
   

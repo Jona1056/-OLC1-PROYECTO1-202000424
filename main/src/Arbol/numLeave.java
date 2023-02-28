@@ -11,8 +11,8 @@ package Arbol;
 public class numLeave {
      public int content;
 
-    public numLeave(String content) {
-        this.content = clean(content) + 1;
+    public numLeave(int contet2) {
+        this.content = contet2 + 1;
     }
     
     public int getNum(){
@@ -21,7 +21,5 @@ public class numLeave {
     }
     
     
-    public int clean(String content){
-        return content.replace(".", "").replace("|", "").replace("*", "").replace("?","").replace("+", "").length();
-    }
+   
 }

@@ -173,11 +173,17 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Guardar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="B_guardarActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="B_Gcomo">
           <Properties>
             <Property name="text" type="java.lang.String" value="Guardar como"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="B_GcomoActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

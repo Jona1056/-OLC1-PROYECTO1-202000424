@@ -6,13 +6,16 @@ package Arbol;
 
 import java.util.ArrayList;
 
+import Arbol.node;
+
 /**
  *
  * @author Jonatan Garcia
  */
 public class main {
-    public static void hola() {
-         String er = ".. |{letra} * {nums} . | * |{separados} {mayus} {separados}"; //abb*(a|b)*
+
+    public static void Arbol(String er,String identificador) {
+         
         //String er = "...*|ababb"; //En esta er ocurre el bug
         
         ArrayList<node> leaves = new ArrayList();
@@ -22,7 +25,7 @@ public class main {
         
         Tree arbol = new Tree(er, leaves, table); // CREA EL ARBOL
         node raiz = arbol.getRoot();
-
+        
         raiz.getNode(); // DETERMINA SI LOS NODOS SON ANULABLES, SUS PRIMEROS Y ULTIMOS
         raiz.follow();
         
@@ -33,6 +36,17 @@ public class main {
         System.out.println("=============================TABLA TRANSICIONES=============================");
         tran.impTable();
         System.out.println("============================= GRAPHVIZ===============================================");
-        tran.impGraph();
+        String afd =tran.impGraph();
+        tran.AFD(afd, identificador);
+        
+         //AQUI CREAMOS EL ARBOL EN GRAPHVIZ
+         String Cadena = raiz.toGraphviz(identificador);
+         arbol.printArbol(Cadena,identificador);
+       
     }
+    
+    
+   
 }
+
+

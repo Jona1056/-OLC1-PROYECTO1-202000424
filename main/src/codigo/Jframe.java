@@ -6,6 +6,7 @@ package codigo;
 import java.awt.Color;
 import java.awt.List;
 import codigo.ErrorHTML;
+import java.awt.Desktop;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -14,17 +15,21 @@ import java.nio.file.Files;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java_cup.runtime.Symbol;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
  * @author Jonatan Garcia
  */
 public class Jframe extends javax.swing.JFrame {
-
+    static File archivo;
     /**
      * Creates new form Jframe
      */
@@ -95,8 +100,18 @@ public class Jframe extends javax.swing.JFrame {
         });
 
         B_guardar.setText("Guardar");
+        B_guardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                B_guardarActionPerformed(evt);
+            }
+        });
 
         B_Gcomo.setText("Guardar como");
+        B_Gcomo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                B_GcomoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout Panel_archivoLayout = new javax.swing.GroupLayout(Panel_archivo);
         Panel_archivo.setLayout(Panel_archivoLayout);
@@ -255,7 +270,8 @@ public class Jframe extends javax.swing.JFrame {
     private void B_abrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_B_abrirActionPerformed
      JFileChooser chooser = new JFileChooser();
      chooser.showOpenDialog(null);
-     File archivo = new File(chooser.getSelectedFile().getAbsolutePath());
+     archivo = new File(chooser.getSelectedFile().getAbsolutePath());
+      
      
      try{
          String ST = new String(Files.readAllBytes(archivo.toPath()));
@@ -307,7 +323,12 @@ public class Jframe extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        resultados.imprimir();
+              try {
+                Desktop.getDesktop().open(new File("D:\\Desktop\\[OLC1]PROYECTO1-202000424\\main\\ARBOLES_202000424"));
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void SiguientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SiguientesActionPerformed
@@ -315,8 +336,69 @@ public class Jframe extends javax.swing.JFrame {
     }//GEN-LAST:event_SiguientesActionPerformed
 
     private void TransicionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TransicionesActionPerformed
-            
+       
     }//GEN-LAST:event_TransicionesActionPerformed
+
+    private void B_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_B_guardarActionPerformed
+        //mandar datos del archivo
+     
+        try {
+            String datos =Area1.getText();
+            FileWriter archivo2 = new FileWriter(archivo);
+            archivo2.write(datos);
+            archivo2.close();
+            System.out.println("Los datos se han sobrescrito con éxito en el archivo.");
+              JOptionPane.showMessageDialog(null, "EL ARCHIVO HA SIDO GUARDADO", "GUARDADO", JOptionPane.INFORMATION_MESSAGE);
+        } catch (IOException e) {
+              JOptionPane.showMessageDialog(null, "ERROR AL GUARDAR ARCHIVO", "ERROR", JOptionPane.INFORMATION_MESSAGE);
+            System.out.println("Ha ocurrido un error al intentar sobrescribir los datos en el archivo.");
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_B_guardarActionPerformed
+
+    private void B_GcomoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_B_GcomoActionPerformed
+       JFileChooser fileChooser = new JFileChooser();
+
+    // Crea un filtro de archivo para limitar los tipos de archivos que se pueden seleccionar
+    FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos de texto (*.OLC)", "OLC");
+    fileChooser.setFileFilter(filtro);
+
+    // Muestra el cuadro de diálogo para guardar archivo
+    int resultado = fileChooser.showSaveDialog(null);
+
+    if (resultado == JFileChooser.APPROVE_OPTION) {
+      // Obtiene el archivo seleccionado
+      File archivo = fileChooser.getSelectedFile();
+
+      try {
+        // Agrega la extensión al nombre del archivo seleccionado
+        String nombreArchivo = archivo.getName();
+        if (!nombreArchivo.endsWith(".OLC")) {
+          archivo = new File(archivo.getParentFile(), nombreArchivo + ".OLC");
+        }
+
+        // Crea un nuevo archivo con el nombre y la ubicación seleccionados por el usuario
+        archivo.createNewFile();
+   
+        // Crea un objeto BufferedWriter para escribir en el archivo
+        BufferedWriter writer = new BufferedWriter(new FileWriter(archivo));
+
+        // Escribe datos en el archivo
+        String res = Area1.getText();
+        writer.write(res);
+
+        // Cierra el objeto BufferedWriter
+        writer.close();
+
+        JOptionPane.showMessageDialog(null, "El archivo se ha creado y guardado correctamente.");
+      } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Se produjo un error al crear o guardar el archivo.");
+      }
+    } else if (resultado == JFileChooser.CANCEL_OPTION) {
+      JOptionPane.showMessageDialog(null, "La operación ha sido cancelada.");
+    }
+  
+    }//GEN-LAST:event_B_GcomoActionPerformed
 
     /**
      * @param args the command line arguments

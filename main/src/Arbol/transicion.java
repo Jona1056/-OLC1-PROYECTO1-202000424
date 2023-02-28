@@ -30,7 +30,8 @@ public class transicion {
     }
     
     public String graph(){
-        return this.initialState +  "->"  + this.finalState + "[label=\"" + this.transition + "\"]";
+        String x = this.transition.replaceAll("\"", "");
+        return this.initialState +  "->"  + this.finalState + "[label=\"" + x + "\"]";
     }
 
     void setNext(String string) {
