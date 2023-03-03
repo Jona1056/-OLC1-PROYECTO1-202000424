@@ -32,9 +32,11 @@ public class main {
         System.out.println("==============================TABLA SIGUIENTES==============================");
         followTable ft = new followTable();
         ft.printTable(table);
+        ft.printHtmlTable(table, identificador);
         transitionTable tran = new transitionTable(raiz, table, leaves); // bug
         System.out.println("=============================TABLA TRANSICIONES=============================");
         tran.impTable();
+        tran.HTMLTransicion(identificador);
         System.out.println("============================= GRAPHVIZ===============================================");
         String afd =tran.impGraph();
         tran.AFD(afd, identificador);

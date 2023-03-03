@@ -196,6 +196,11 @@ public class Jframe extends javax.swing.JFrame {
         });
 
         jButton6.setText("Automatas");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -332,11 +337,19 @@ public class Jframe extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void SiguientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SiguientesActionPerformed
-            Errores.ImprimirErrores();        // TODO add your handling code here:
+             try {
+                Desktop.getDesktop().open(new File("D:\\Desktop\\[OLC1]PROYECTO1-202000424\\main\\SIGUIENTES_202000424"));
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }  // TODO add your handling code here:
     }//GEN-LAST:event_SiguientesActionPerformed
 
     private void TransicionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TransicionesActionPerformed
-       
+         try {
+                Desktop.getDesktop().open(new File("D:\\Desktop\\[OLC1]PROYECTO1-202000424\\main\\TRANSICIONES_202000424"));
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }  // TODO add your handling code here:
     }//GEN-LAST:event_TransicionesActionPerformed
 
     private void B_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_B_guardarActionPerformed
@@ -399,6 +412,14 @@ public class Jframe extends javax.swing.JFrame {
     }
   
     }//GEN-LAST:event_B_GcomoActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+       try {
+                Desktop.getDesktop().open(new File("D:\\Desktop\\[OLC1]PROYECTO1-202000424\\main\\AFD_202000424"));
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
      * @param args the command line arguments

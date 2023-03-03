@@ -22,7 +22,7 @@ import java.util.Set;
  * @author Jonatan Garcia
  */
 public class transitionTable {
-
+    public String Transicion;
     public ArrayList<ArrayList> states;
     public int cont;
     
@@ -113,6 +113,16 @@ public class transitionTable {
 }
     
     public void impTable(){
+        Transicion ="";
+         Transicion +="<div class=container>"+
+"		 <h1>TABLA DE TRANSICIONES Carnet: 202000424</h1>"+
+"		 <table>"+
+ "               <tr>" +
+ "               <td colspan=1>ESTADO</td>"+
+ "               <td colspan=1>TRANSICIONES</td>"+
+                  "<td colspan=1>ACEPTABLE</td>"
+                 ;
+         
         for(ArrayList state : states){
             String tran = "[";
             for(Object tr : (ArrayList)state.get(2)){
@@ -122,6 +132,92 @@ public class transitionTable {
             tran += "]";
             tran = tran.replace(", ]", "]");
             System.out.println(state.get(0) + " " + state.get(1) + " " + tran + " " + state.get(3));
+            Transicion +=  "<tr>\n" +
+                     "    <td>" + state.get(0) + ""+state.get(1) +"</td>\n" +
+                     "    <td>" + state.get(2) + "</td>\n" +
+                        "    <td>" + state.get(3) + "</td>\n" +
+                     "</tr>\n";
+        }
+    }
+    public void HTMLTransicion(String identificador){
+          try {
+            PrintWriter writer = new PrintWriter("D:\\Desktop\\[OLC1]PROYECTO1-202000424\\main\\TRANSICIONES_202000424\\"+"TRANSICIONES_"+identificador+".html", "UTF-8");
+            writer.println("<!DOCTYPE html>\n" +
+"<html>\n" +
+"<head>\n" +
+"	<meta charset=\"UTF-8\">\n" +
+"	<title>Tabla con estilo</title>\n" +
+"	<style>\n" +
+"		body {\n" +
+"			background: linear-gradient(to bottom, #3a4c63, #62c98d);\n" +
+"			background-size: cover;\n" +
+"			background-repeat: no-repeat;\n" +
+"			margin: 0;\n" +
+"			padding: 0;\n" +
+"			display: flex;\n" +
+"			flex-direction: column;\n" +
+"			height: 100vh;\n" +
+"			justify-content: center;\n" +
+"		}\n" +
+"		h1 {\n" +
+"			font-size: 36px;\n" +
+"			color: white;\n" +
+"			text-align: center;\n" +
+"			margin-top: 40px;\n" +
+"			margin-bottom: 20px;\n" +
+"			text-shadow: 2px 2px #555;\n" +
+"		}\n" +
+"		.container {\n" +
+"			display: flex;\n" +
+"			flex-direction: column;\n" +
+"			align-items: center;\n" +
+"		}\n" +
+"		table {\n" +
+"			border-collapse: collapse;\n" +
+"			width: 80%;\n" +
+"			font-family: Arial, sans-serif;\n" +
+"			font-size: 14px;\n" +
+"			text-align: center;\n" +
+"			background-color: #f9f9f9;\n" +
+"			box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);\n" +
+"			margin-top: 40px;\n" +
+"			margin-bottom: 40px;\n" +
+"		}\n" +
+"		th, td {\n" +
+"			border: 1px solid #ddd;\n" +
+"			padding: 12px;\n" +
+"			text-align: center;\n" +
+"			vertical-align: middle;\n" +
+"		}\n" +
+"		th {\n" +
+"			background-color: #4CAF50;\n" +
+"			color: white;\n" +
+"			text-transform: uppercase;\n" +
+"			letter-spacing: 1px;\n" +
+"			font-weight: bold;\n" +
+"		}\n" +
+"		tr:nth-child(even) {\n" +
+"			background-color: #f2f2f2;\n" +
+"		}\n" +
+"		tr:hover {\n" +
+"			background-color: #ddd;\n" +
+"		}\n" +
+"        /* Personalización de la tabla */\n" +
+"        table {\n" +
+"            font-size: 16px;\n" +
+"        }\n" +
+"	</style>\n" +
+"</head>\n" +
+Transicion+
+"        </table>\n" +
+"	</div>\n" 
+ + "<t/body>\n"+  
+          "</html>"      );
+         
+            writer.close();
+            System.out.println("El archivo archivo.html ha sido creado correctamente.");
+        } catch (IOException e) {
+            System.out.println("Ha ocurrido un error al crear el archivo archivo.html: " + e.getMessage());
         }
     }
     

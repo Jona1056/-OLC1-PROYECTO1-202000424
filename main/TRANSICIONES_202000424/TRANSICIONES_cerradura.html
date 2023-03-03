@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>ERRORES GENERADOS Carnet: 202000424</title>
+	<meta charset="UTF-8">
+	<title>Tabla con estilo</title>
 	<style>
 		body {
 			background: linear-gradient(to bottom, #3a4c63, #62c98d);
@@ -57,34 +58,28 @@
 		tr:hover {
 			background-color: #ddd;
 		}
+        /* Personalización de la tabla */
+        table {
+            font-size: 16px;
+        }
 	</style>
 </head>
-<body>
-	<div class="container">
-		<h1>ERRORES GENERADOS Carnet: 202000424</h1>
-		<table>
-			<thead>
-				<tr>
-<th>No</th>
-					<th>Lexema</th>
-					<th>Fila</th>
-					<th>Columna</th>
-					<th>Tipo</th>
-					<th>Descripcion</th>
-				</tr>
-			</thead>
-<tbody>
+<div class=container>		 <h1>TABLA DE TRANSICIONES Carnet: 202000424</h1>		 <table>               <tr>               <td colspan=1>ESTADO</td>               <td colspan=1>TRANSICIONES</td><td colspan=1>ACEPTABLE</td><tr>
+    <td>S0[1, 2, 3]</td>
+    <td>[S0 -> letra -> S1, S0 -> separados -> S2]</td>
+    <td>true</td>
+</tr>
 <tr>
- 					<td>1</td>
-					<td>"estees"</td>
-					<td>19</td>
-					<td>61</td>
-					<td>SINTACTICO</td>
-					<td>El Caracter "estees" que se ingreso no es permitido,revise la escritura de su Oracion</td>
-				</tr>
-				<tr>
-<t/body>
-		</table>
+    <td>S1[1, 3]</td>
+    <td>[S1 -> letra -> S1]</td>
+    <td>true</td>
+</tr>
+<tr>
+    <td>S2[3]</td>
+    <td>[]</td>
+    <td>true</td>
+</tr>
+        </table>
 	</div>
-</body>
+<t/body>
 </html>

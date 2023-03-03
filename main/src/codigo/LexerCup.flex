@@ -13,7 +13,8 @@ L=[a-zA-Z_$]+
 D=[0-9]+
 c=[\"]
 S=[!-}]+
-J=[!-/ :-` {-}]+
+J=[ -/:-@\[-`{-}]
+n=("\\\"")
 
 
 STR = "\"" [^\"\n]+ "\""
@@ -99,10 +100,10 @@ espacio=[ ,\t,\r,\n]+
 {L}"~"{L} {return new Symbol(sym.CON, yychar, yyline, yytext());}
 {J}"~"{J} {return new Symbol(sym.CON, yychar, yyline, yytext());}
 {D}"~"{D} {return new Symbol(sym.CON, yychar, yyline, yytext());}
-{c}({S}|{L}){c} {return new Symbol(sym.Oracion, yychar, yyline, yytext());}
-({L})("\,"({L}|{D}))* {return new Symbol(sym.CON, yychar, yyline, yytext());}
-({D})("\,"({D}|{L}))* {return new Symbol(sym.CON, yychar, yyline, yytext());}
-"\"" [^\"\n]+ "\"" {return new Symbol(sym.Oracion2, yychar, yyline, yytext());}
+{c}({S}|{L}|{n}|"\\\'")+{c} {return new Symbol(sym.Oracion, yychar, yyline, yytext());}
+({L}|{J})("\,"({L}|{D}|{J}))+ {return new Symbol(sym.CON, yychar, yyline, yytext());}
+({D}|{J})("\,"({D}|{L}|{J}))+ {return new Symbol(sym.CON, yychar, yyline, yytext());}
+"\"" ([^\"\n]|{n}|"\\\'")+ "\"" {return new Symbol(sym.Oracion2, yychar, yyline, yytext());}
 
 /* Error de analisis */
  . {return new Symbol(sym.ERROR, yychar, yyline, yytext());}
