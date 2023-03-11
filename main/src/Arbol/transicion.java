@@ -26,11 +26,15 @@ public class transicion {
     
     @Override
     public String toString(){
+         
+    
         return this.initialState + " -> " + this.transition + " -> " + this.finalState;
     }
     
     public String graph(){
-        String x = this.transition.replaceAll("\"", "");
+          String x;
+     
+        x = this.transition.replaceAll("\"", "");
         return this.initialState +  "->"  + this.finalState + "[label=\"" + x + "\"]";
     }
 

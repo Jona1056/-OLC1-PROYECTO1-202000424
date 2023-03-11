@@ -14,8 +14,10 @@ D=[0-9]+
 c=[\"]
 S=[!-}]+
 J=[ -/:-@\[-`{-}]
-n=("\\\"")
-
+n=("\\\"")+
+ñ=("\\\'")
+ene = ("\\n")
+ENTRADA =  [^!]
 
 STR = "\"" [^\"\n]+ "\""
 espacio=[ ,\t,\r,\n]+
@@ -30,11 +32,16 @@ espacio=[ ,\t,\r,\n]+
 %%
 
 
+/* Comentarios */
+{espacio} {}
+
+"//".* {}
+"<!"{ENTRADA}*"!>" {}
 
 
 
-
-
+{ñ} {return new Symbol(sym.Com1,yyline,yychar, yytext());} 
+{ene} {return new Symbol(sym.Com2,yyline,yychar, yytext());} 
 /* CONJUNTO*/
 ( "CONJ" ) {return new Symbol(sym.Conjunto, yychar, yyline, yytext());}
 
@@ -85,14 +92,12 @@ espacio=[ ,\t,\r,\n]+
 ( "+" ) {return new Symbol(sym.SUMA, yychar, yyline, yytext());}
 
 ( "\"" ) {return new Symbol(sym.COMILLAS, yychar, yyline, yytext());}
-
+"\\" {return new Symbol(sym.Barra,yyline,yychar, yytext());} 
 
 /* Espacios en blanco */
-{espacio} {/*Ignore*/}
 
-/* Comentarios */
-( "//"(.)* ) {/*Ignore*/}
-"<!"(.|\n)*?"!>" {/*Ignore*/}
+
+
 /* IDENTIFICADOR */
 
 {L}({L}|{D})* {return new Symbol(sym.Identificador, yychar, yyline, yytext());}
@@ -100,10 +105,11 @@ espacio=[ ,\t,\r,\n]+
 {L}"~"{L} {return new Symbol(sym.CON, yychar, yyline, yytext());}
 {J}"~"{J} {return new Symbol(sym.CON, yychar, yyline, yytext());}
 {D}"~"{D} {return new Symbol(sym.CON, yychar, yyline, yytext());}
-{c}({S}|{L}|{n}|"\\\'")+{c} {return new Symbol(sym.Oracion, yychar, yyline, yytext());}
+
 ({L}|{J})("\,"({L}|{D}|{J}))+ {return new Symbol(sym.CON, yychar, yyline, yytext());}
 ({D}|{J})("\,"({D}|{L}|{J}))+ {return new Symbol(sym.CON, yychar, yyline, yytext());}
-"\"" ([^\"\n]|{n}|"\\\'")+ "\"" {return new Symbol(sym.Oracion2, yychar, yyline, yytext());}
 
+{c}(  {S}|{L}|{n}|{ñ}|[^\"\n] ){c} {return new Symbol(sym.Oracion, yychar, yyline, yytext());}
+"\""([^\"\n]|{n}|{ñ} )+ "\"" {return new Symbol(sym.Oracion2, yychar, yyline, yytext());}
 /* Error de analisis */
  . {return new Symbol(sym.ERROR, yychar, yyline, yytext());}

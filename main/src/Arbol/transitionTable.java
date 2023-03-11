@@ -229,6 +229,8 @@ Transicion+
         
         String label = state.get(0).toString();
         
+    
+        
         // si el estado es de aceptacion, se agrega doble circulo
         if ((boolean) state.get(3)) {
             graph += "\"" + label + "\" [shape=\"doublecircle\"];\n";
@@ -246,6 +248,7 @@ Transicion+
      return graph;
     
 }
+ 
  public void AFD(String cadena, String Identificador){
       try {
             // Crear un proceso que ejecute el comando "dot"

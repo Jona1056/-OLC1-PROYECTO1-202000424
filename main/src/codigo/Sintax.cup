@@ -17,7 +17,7 @@ parser code
     public void syntax_error(Symbol s){ 
         System.out.println("Error Sintáctico en la Línea " + (s.left) +
         " Columna "+s.right+ ". No se esperaba este componente: " +s.value+"."); 
-         Errores.addErrores(s.value.toString(),s.right,s.left,"SINTACTICO","El Caracter " + s.value.toString()+" que se ingreso no es permitido,revise la escritura de su Oracion");
+         Errores.addErrores(s.value.toString(),s.left,s.right,"SINTACTICO","El Caracter " + s.value.toString()+" que se ingreso no es permitido,revise la escritura de su Oracion");
     } 
 
     /**
@@ -34,7 +34,7 @@ parser code
   
 :};
 
-terminal Llave_a, Llave_c, Conjunto, Guion, Mayor, D_puntos, Identificador,ERROR,Comilla_s,P_coma,Porcentaje,COMILLAS, Interrogacion,CON, PUNTO1, KLEENE, OR,SUMA,Oracion,Oracion2;
+terminal Llave_a, Llave_c, Conjunto, Guion, Mayor, D_puntos, Identificador,ERROR,Comilla_s,Com1,Com2,P_coma,Barra,Porcentaje,COMILLAS, Interrogacion,CON, PUNTO1, KLEENE, OR,SUMA,Oracion,Oracion2;
 non terminal INICIO,INI,INI2,EXPRESIONES,CONJUNTOS,FINAL,FINAL1,INI4,INI3,CREACION,ORACIONES;
 
 start with INICIO;
@@ -94,6 +94,10 @@ CREACION ::=
       | SUMA CREACION:b{:System.out.print("+");  RESULT="+"+b;:} 
       | Llave_a Identificador:d Llave_c {:System.out.print("{"+d+"}"); RESULT="{"+d+"}"  ;:}
       |  Interrogacion CREACION:b {:System.out.print("?"); RESULT="?"+b;:} 
+      | Com1 {:System.out.print("\\\'"); RESULT="\\\'";:} 
+      | Com2 {:System.out.print("\\n"); RESULT="\\n";:} 
+
+
 
 
 
@@ -104,8 +108,8 @@ CREACION ::=
 
 ORACIONES ::=
 
-    ORACIONES Identificador D_puntos Oracion P_coma     
-    | Identificador D_puntos Oracion P_coma
+    ORACIONES Identificador D_puntos Oracion2 P_coma     
+    | Identificador D_puntos Oracion2 P_coma
  
 ;
 

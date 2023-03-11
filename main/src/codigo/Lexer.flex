@@ -17,8 +17,9 @@ c=[\"]+
 
 S=[!-}]
 J=[ -/:-@\[-`{-}]
-n=("\\\"")
-
+n=("\\\"")+
+ñ=("\\\'")
+ene = ("\\n")
 %init{ 
     yyline = 1; 
     yychar = 1; 
@@ -27,11 +28,16 @@ n=("\\\"")
 STR = "\"" [^\"\n]+ "\""
 
 espacio=[ ,\t,\r,\n]+
-
+ENTRADA =  [^!]
 
 %%
+{espacio} {}
+"//".* {}
+"<!" {ENTRADA}* "!>" {}
 
 "CONJ" {return new Symbol(sym.Conjunto,yyline,yychar, yytext());} 
+{ene} {return new Symbol(sym.Com2,yyline,yychar, yytext());} 
+{ñ} {return new Symbol(sym.Com1,yyline,yychar, yytext());} 
 "%" {return new Symbol(sym.Porcentaje,yyline,yychar, yytext());} 
 ":" {return new Symbol(sym.D_puntos,yyline,yychar, yytext());} 
 ";" {return new Symbol(sym.P_coma,yyline,yychar, yytext());} 
@@ -40,7 +46,7 @@ espacio=[ ,\t,\r,\n]+
 "?" {return new Symbol(sym.Interrogacion,yyline,yychar, yytext());} 
 "-" {return new Symbol(sym.Guion,yyline,yychar, yytext());} 
 ">" {return new Symbol(sym.Mayor,yyline,yychar, yytext());} 
-
+"\\" {return new Symbol(sym.Barra,yyline,yychar, yytext());} 
 "'" {return new Symbol(sym.Comilla_s,yyline,yychar, yytext());} 
 
 "." {return new Symbol(sym.PUNTO1,yyline,yychar, yytext());} 
@@ -51,15 +57,13 @@ espacio=[ ,\t,\r,\n]+
 {L}"~"{L} {return new Symbol(sym.CON, yychar, yyline, yytext());}
 {J}"~"{J} {return new Symbol(sym.CON, yychar, yyline, yytext());}
 {D}"~"{D} {return new Symbol(sym.CON, yychar, yyline, yytext());}
-{c}({S}|{L}|{n}|"\\\'")+{c} {return new Symbol(sym.Oracion, yychar, yyline, yytext());}
-"\""([^\"\n]|{n}|"\\\'")+ "\"" {return new Symbol(sym.Oracion2, yychar, yyline, yytext());}
+{c}({S}|{L}|{n}|{ñ}|[^\"\n]){c} {return new Symbol(sym.Oracion, yychar, yyline, yytext());}
+"\""([^\"\n]|{n}|{ñ})+ "\"" {return new Symbol(sym.Oracion2, yychar, yyline, yytext());}
 ({L}|{J})("\,"({L}|{D}|{J}))+ {return new Symbol(sym.CON, yychar, yyline, yytext());}
 ({D}|{J})("\,"({D}|{L}|{J}))+ {return new Symbol(sym.CON, yychar, yyline, yytext());}
 
 \n {yychar=1;}
-{espacio} {}
-"//".* {}
-"<!"(.|\n)*?"!>" {}
+
 
 
 

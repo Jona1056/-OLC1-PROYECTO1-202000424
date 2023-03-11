@@ -84,9 +84,28 @@ for (int i = 0; i < erSplit.length; i++) {
               erSplitList2.add(variable);
             i = j; // saltar el bloque de caracteres procesados
         }
-    }
-      
+    }else if (erSplit[i].equals("\\")) {
+        // Verificar el siguiente carácter después de '\'
+        if (i + 1 < erSplit.length) {
+  
+            String variable = erSplit[i] + erSplit[i+1];
+            if (variable.equals("\\n")) {
+                 erSplitList.add("caracter especial n");
+                erSplitList2.add("caracter especial n");
+            }else if (variable.equals("\\\'")){
+                  erSplitList.add("caracter especial '");
+                erSplitList2.add("caracter especial '");
+            }else if (variable.equals("\\\"")){
+                erSplitList.add("caracter especial \"");
+                erSplitList2.add("caracter especial \"");
+            }
+
+                i++; // saltar el siguiente carácter
+         
+        } 
+        }
 }
+
   System.out.println("---------------------------------------------------");
           System.out.println(erSplitList);
          System.out.println(erSplitList2.size());
