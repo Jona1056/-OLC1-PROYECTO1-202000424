@@ -80,8 +80,18 @@ for (int i = 0; i < erSplit.length; i++) {
                 variable += erSplit[k];
             }
              variable += "\"";
-            erSplitList.add(variable);
+             System.out.println(variable);
+             if(variable.equals("\" \"")){
+                    erSplitList.add("vacio");
+              erSplitList2.add("vacio");
+             }else{
+                    erSplitList.add(variable);
               erSplitList2.add(variable);
+             }
+           
+                 
+             
+         
             i = j; // saltar el bloque de caracteres procesados
         }
     }else if (erSplit[i].equals("\\")) {
@@ -89,22 +99,17 @@ for (int i = 0; i < erSplit.length; i++) {
         if (i + 1 < erSplit.length) {
   
             String variable = erSplit[i] + erSplit[i+1];
-            if (variable.equals("\\n")) {
-                 erSplitList.add("caracter especial n");
-                erSplitList2.add("caracter especial n");
-            }else if (variable.equals("\\\'")){
-                  erSplitList.add("caracter especial '");
-                erSplitList2.add("caracter especial '");
-            }else if (variable.equals("\\\"")){
-                erSplitList.add("caracter especial \"");
-                erSplitList2.add("caracter especial \"");
-            }
+       
+                 erSplitList.add(variable);
+                 erSplitList2.add(variable);
 
+            }
+           
                 i++; // saltar el siguiente carácter
          
         } 
         }
-}
+
 
   System.out.println("---------------------------------------------------");
           System.out.println(erSplitList);

@@ -29,11 +29,12 @@ public class main {
         raiz.getNode(); // DETERMINA SI LOS NODOS SON ANULABLES, SUS PRIMEROS Y ULTIMOS
         raiz.follow();
         
+        
         System.out.println("==============================TABLA SIGUIENTES==============================");
         followTable ft = new followTable();
         ft.printTable(table);
         ft.printHtmlTable(table, identificador);
-        transitionTable tran = new transitionTable(raiz, table, leaves); // bug
+        transitionTable tran = new transitionTable(raiz, table, leaves); 
         System.out.println("=============================TABLA TRANSICIONES=============================");
         tran.impTable();
         tran.HTMLTransicion(identificador);
@@ -46,6 +47,24 @@ public class main {
          arbol.printArbol(Cadena,identificador);
        
     }
+    
+      public static void Datos(String er,String identificador,String oracion) {
+          System.out.println("EXPRESION: " + " " + er   + "nombre cadena" + " " +identificador);
+           System.out.println("ORACION A EVALUAR"+ " "+ oracion);
+             
+            ArrayList<node> leaves = new ArrayList();
+            ArrayList<ArrayList> table = new ArrayList();
+            er = "." + er + "#";
+            Tree arbol = new Tree(er, leaves, table); // CREA EL ARBOL
+            node raiz = arbol.getRoot();
+        
+            raiz.getNode(); // DETERMINA SI LOS NODOS SON ANULABLES, SUS PRIMEROS Y ULTIMOS
+            raiz.follow();
+            transitionTable tran = new transitionTable(raiz, table, leaves); 
+            tran.impTable();
+            tran.evaluarcadena(oracion, identificador);
+     
+      }
     
     
    

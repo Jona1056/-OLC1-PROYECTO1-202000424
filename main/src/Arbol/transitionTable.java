@@ -3,6 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Arbol;
+
+import codigo.resultados;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
@@ -13,6 +15,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -25,77 +28,91 @@ public class transitionTable {
     public String Transicion;
     public ArrayList<ArrayList> states;
     public int cont;
+    public ArrayList<ArrayList> evaluar = new ArrayList<>();;
+    public ArrayList<ArrayList> evaluar2 =new ArrayList<>();;
+  
     
     public transitionTable(node root, ArrayList tabla, ArrayList<node> leaves) {
-    this.states = new ArrayList();
-    
-    ArrayList datos = new ArrayList();
-    datos.add("S0");
-    datos.add(root.first);
-    datos.add(new ArrayList());
-    datos.add(false);
-    
-    this.states.add(datos);
-    this.cont = 1;
-    
-    for(int i = 0; i < states.size(); i++){
-        ArrayList state = states.get(i);
-        ArrayList<Integer> elementos = (ArrayList) state.get(1);
-        
-        Map<String, ArrayList<Integer>> transiciones = new HashMap<>();
-        boolean esAceptacion = false;
-        
-        for(int hoja : elementos){
-            followTable sigTabla = new followTable();
-            ArrayList lexemeNext = (ArrayList) sigTabla.next(hoja, tabla).clone();
-            
-            if(lexemeNext.get(0) == ""){
-                continue;
-            }
-            
-            ArrayList<Integer> sigEstados = transiciones.get(lexemeNext.get(0));
-            if(sigEstados == null){
-                sigEstados = new ArrayList<>();
-                transiciones.put((String)lexemeNext.get(0), sigEstados);
-            }
-            sigEstados.addAll((ArrayList<Integer>)lexemeNext.get(1));
-            
-            leave hojas = new leave();
-            if(hojas.isAccept(hoja, leaves)){
-                   state.set(3, true);
-            }
-        }
-        
-        
-        for(Map.Entry<String, ArrayList<Integer>> entrada : transiciones.entrySet()){
-            ArrayList<Integer> sigEstados = entrada.getValue();
-            
-            String nombreEstadoSiguiente = null;
-            for(ArrayList estado : states){
-                if(estado.get(1).equals(sigEstados)){
-                    nombreEstadoSiguiente = (String)estado.get(0);
-                    break;
+          this.states = new ArrayList(); // are the states of the AFD
+
+        ArrayList datos = new ArrayList(); // are the data of the states
+        datos.add("S0");
+        datos.add(root.first);
+        datos.add(new ArrayList());
+        datos.add(false);
+        //datos.add(new ArrayList());
+        int aceptacion = 0;
+        // graphs
+
+        // data save the first state, an arraylist and if is an accept state
+        this.states.add(datos);
+        this.cont = 1;
+
+        for(int i = 0; i < states.size(); i++){ // iterate through the states
+            ArrayList state = states.get(i); // get the state
+
+            ArrayList<Integer> elementos = (ArrayList) state.get(1); // get the elements of the state
+            Map<String, ArrayList<Integer>> transiciones = new HashMap<>(); // are the transitions of the state
+
+            for(int hoja : elementos){
+                followTable sigTabla = new followTable();
+                ArrayList lexemeNext = (ArrayList) sigTabla.next(hoja, tabla).clone();
+
+                if(lexemeNext.get(0) == ""){
+                    continue;
                 }
+
+                ArrayList<Integer> sigEstados = transiciones.get(lexemeNext.get(0));
+                if(sigEstados == null){
+                    sigEstados = new ArrayList<>();
+                    transiciones.put((String)lexemeNext.get(0), sigEstados);
+                }
+                sigEstados.addAll((ArrayList<Integer>)lexemeNext.get(1));
+
+                leave hojas = new leave(); // here is the problem with accepted states
+      
             }
-            
-            
-            if(nombreEstadoSiguiente == null){
-                nombreEstadoSiguiente = "S" + cont;
-                cont++;
-                
-                ArrayList nuevo = new ArrayList();
-                nuevo.add(nombreEstadoSiguiente);
-                nuevo.add(sigEstados);
-                nuevo.add(new ArrayList());
-                nuevo.add(false);
-                
-                states.add(nuevo);
+
+            for(Map.Entry<String, ArrayList<Integer>> entrada : transiciones.entrySet()){
+                ArrayList<Integer> sigEstados = entrada.getValue();
+
+                String nombreEstadoSiguiente = null;
+                for(ArrayList estado : states){
+                    if(estado.get(1).equals(sigEstados)){
+                        nombreEstadoSiguiente = (String)estado.get(0);
+                        break;
+                    }
+                }
+
+                if(nombreEstadoSiguiente == null){
+                    nombreEstadoSiguiente = "S" + cont;
+                    cont++;
+
+                    ArrayList nuevo = new ArrayList();
+                    nuevo.add(nombreEstadoSiguiente);
+                    nuevo.add(sigEstados);
+                    nuevo.add(new ArrayList());
+                    // evaluate if the number is in sigEstados
+                    if(sigEstados.contains(aceptacion)){
+                        nuevo.add(true);
+                     
+                    }else{
+                        nuevo.add(false);
+                    }
+                    //nuevo.add(new ArrayList());
+                    states.add(nuevo);
+                    // add the accept state
+                    //System.out.println("nuevo: " + nuevo);
+
+                }
+
+               
+
+                transicion trans = new transicion(state.get(0) + "", entrada.getKey(), nombreEstadoSiguiente);
+                ((ArrayList)state.get(2)).add(trans);
+                //((ArrayList)state.get(4)).add(trans.toArray());
             }
-            
-            transicion trans = new transicion(state.get(0) + "", entrada.getKey(), nombreEstadoSiguiente);
-            ((ArrayList)state.get(2)).add(trans);
         }
-    }
         updateAcceptStates(states,leaves);
     }
     
@@ -111,7 +128,153 @@ public class transitionTable {
         state.set(3, acceptState);
     }
 }
+    public void evaluarcadena(String cadena, String nombre){
+        int contador = 0;
+          evaluar = new ArrayList();
+         for(ArrayList state : states){
+             System.out.println("--------------------------------");
+              ArrayList<Object> dat = (ArrayList<Object>) state.get(2);
+               evaluar2 = new ArrayList();
+             for(Object state1: dat){
+             
+                 String cadena1 = state1.toString();
+                 cadena1 = cadena1.replace("->", "");
+            
+                 String[] palabras = cadena1.split("[\\s]+");
+             
+                 String x = state.get(3).toString();
+                  ArrayList<String> sublista = new ArrayList<>(Arrays.asList(palabras));
+                  System.out.println(sublista);
+                  sublista.add(x);
+                  evaluar2.add(sublista);
+           
+             }
+             evaluar.add(evaluar2);
+             if (contador == states.size()-1){
+                 ArrayList<String> sublista1 = new ArrayList<>();
+                 String x1 = "S"+contador;
+                 sublista1.add(x1);
+                 sublista1.add("true");
+                 sublista1.add("true");
+                  sublista1.add("true");
+
+                 evaluar2.add(sublista1);
+             }
+          
+   
+             contador++;
+    }
+         for(ArrayList evalu: evaluar){
+             System.out.println(evalu);
+         }
+         evaluar(evaluar,cadena,nombre);
+         
+        
+         
     
+    }
+    
+    public void evaluar(ArrayList reglas, String cadena,String identificador){
+String estado = "S0";
+boolean aceptado = true;
+int i = 0;
+String cadena1 = cadena.replace("\"", "");
+System.out.println(cadena1);
+        System.out.println(cadena);
+while (i < cadena1.length() && aceptado) {
+    char caracter = cadena1.charAt(i);
+       if (caracter == ' ') {
+        i++;
+        continue;
+    }
+    String carac = String.valueOf(caracter);
+
+    if (carac.equals("\\")) {
+        // Si se encuentra un backslash, se avanza una posición en la cadena
+        i++;
+        carac += cadena1.charAt(i);
+    }
+    System.out.println(carac);
+
+    boolean avanzar_regla = true;
+    for (Object evalu : reglas) {
+        ArrayList ar = (ArrayList) evalu;
+        if (!avanzar_regla) {
+            break;
+        }
+        for (Object reg : ar) {
+            String estado_inicial = ((ArrayList) reg).get(0).toString();
+            String estado_final = ((ArrayList) reg).get(2).toString();
+            String aceptado_str = ((ArrayList) reg).get(3).toString();
+            String conjunto = ((ArrayList) reg).get(1).toString();
+            boolean aceptado_regla = Boolean.parseBoolean(aceptado_str);
+            if (estado.equals(estado_inicial)) {
+                System.out.println("el estado es " + estado_inicial);
+                if (conjunto.contains("\"")) {
+                    String conjunto_sin_comillas = conjunto.replace("\"", "");
+                    System.out.println(carac + " " + conjunto_sin_comillas);
+                    if (carac.equals(conjunto_sin_comillas)) {
+                        estado = estado_final;
+                        System.out.println(estado);
+                        avanzar_regla = false;
+                        break;
+                    }
+                }else if(conjunto.equals("\\'")) {
+                    
+                     if (carac.equals(conjunto)) {
+                       estado = estado_final;
+                      System.out.println(estado);
+                         avanzar_regla = false;
+                     break;
+                        }
+                }
+                
+                else {
+                    boolean perteneceAlConjunto = false;
+                    String conjunto1 = resultados.buscarconjunto(conjunto);
+                    
+                    if(conjunto1 == null){
+                        
+                    }else{
+                    if (conjunto1.contains(",")) {
+                        String[] elementos = conjunto1.split(",");
+                        for (String elem : elementos) {
+                            if (carac.equals(elem)) {
+                                System.out.println(carac);
+                                perteneceAlConjunto = true;
+                                break;
+                            }
+                        }
+                    } else {
+                        char inicio = conjunto1.charAt(0);
+                        char fin = conjunto1.charAt(2);
+                        char c = carac.charAt(0);
+                        if (c >= inicio && c <= fin) {
+                            perteneceAlConjunto = true;
+                        }
+                    }
+                    }
+                    if (perteneceAlConjunto) {
+                        estado = estado_final;
+                        avanzar_regla = false;
+                        if (estado_inicial.equals(estado_final)) {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        if (!avanzar_regla) {
+            break;
+        }
+    }
+    if (avanzar_regla) {
+        aceptado = false;
+    } else {
+        i++;
+    }
+} 
+System.out.println("El resultado es " + aceptado);}
     public void impTable(){
         Transicion ="";
          Transicion +="<div class=container>"+
@@ -121,6 +284,7 @@ public class transitionTable {
  "               <td colspan=1>ESTADO</td>"+
  "               <td colspan=1>TRANSICIONES</td>"+
                   "<td colspan=1>ACEPTABLE</td>"
+             
                  ;
          
         for(ArrayList state : states){
@@ -137,7 +301,9 @@ public class transitionTable {
                      "    <td>" + state.get(2) + "</td>\n" +
                         "    <td>" + state.get(3) + "</td>\n" +
                      "</tr>\n";
+        
         }
+        
     }
     public void HTMLTransicion(String identificador){
           try {
@@ -234,14 +400,17 @@ Transicion+
         // si el estado es de aceptacion, se agrega doble circulo
         if ((boolean) state.get(3)) {
             graph += "\"" + label + "\" [shape=\"doublecircle\"];\n";
-        }
-        
+        }}
+         for(ArrayList state : states){  
+                    String label = state.get(0).toString();
         for(Object tr : (ArrayList)state.get(2)){
+       
             transicion t = (transicion) tr;
             graph += t.graph();
+             graph += "\"" + label + "\" [label=\"" + label + "\"];\n";
         }
         
-        graph += "\"" + label + "\" [label=\"" + label + "\"];\n";
+       
        
     }
      graph += "}";

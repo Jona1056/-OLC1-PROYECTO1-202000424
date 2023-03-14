@@ -3,9 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package codigo;
+import Arbol.main;
 import java.awt.Color;
 import java.awt.List;
 import codigo.ErrorHTML;
+import static codigo.resultados.Expresiones1;
+import static codigo.resultados.ORA;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -292,12 +295,23 @@ public class Jframe extends javax.swing.JFrame {
     }//GEN-LAST:event_B_abrirActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        try {
-            // TODO add your handling code here:
-            analizarLexico();
-        } catch (IOException ex) {
-            Logger.getLogger(Jframe.class.getName()).log(Level.SEVERE, null, ex);
+        resultados.imprimir();
+        if(resultados.Expresiones1.isEmpty() || resultados.ORA.isEmpty()){
+               JOptionPane.showMessageDialog(null, "ANALIZE EL ARCHIVO", "ERROR", JOptionPane.INFORMATION_MESSAGE);
+        }else{
+                 for(Oraciones ora: ORA){
+                     for(expresiones1 exp: Expresiones1){
+                     
+                         if(ora.name.equals(exp.name)){
+                             main.Datos(exp.cadena, ora.name,ora.cadena);
+            
+                         }else{
+                           
+                         }
+            }
+            }
         }
+    
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

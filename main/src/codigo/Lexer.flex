@@ -54,13 +54,13 @@ ENTRADA =  [^!]
 "|" {return new Symbol(sym.OR,yyline,yychar, yytext());} 
 "+" {return new Symbol(sym.SUMA,yyline,yychar, yytext());} 
 {L}({L}|{D})* {return new Symbol(sym.Identificador, yychar, yyline, yytext());}
-{L}"~"{L} {return new Symbol(sym.CON, yychar, yyline, yytext());}
-{J}"~"{J} {return new Symbol(sym.CON, yychar, yyline, yytext());}
-{D}"~"{D} {return new Symbol(sym.CON, yychar, yyline, yytext());}
+{espacio}*{L}{espacio}*"~"{espacio}*{L} {return new Symbol(sym.CON1, yychar, yyline, yytext());}
+{espacio}*{J}{espacio}*"~"{espacio}*{J} {return new Symbol(sym.CON1, yychar, yyline, yytext());}
+{espacio}*{D}{espacio}*"~"{espacio}*{D} {return new Symbol(sym.CON1, yychar, yyline, yytext());}
 {c}({S}|{L}|{n}|{ñ}|[^\"\n]){c} {return new Symbol(sym.Oracion, yychar, yyline, yytext());}
 "\""([^\"\n]|{n}|{ñ})+ "\"" {return new Symbol(sym.Oracion2, yychar, yyline, yytext());}
-({L}|{J})("\,"({L}|{D}|{J}))+ {return new Symbol(sym.CON, yychar, yyline, yytext());}
-({D}|{J})("\,"({D}|{L}|{J}))+ {return new Symbol(sym.CON, yychar, yyline, yytext());}
+({L}|{J} {espacio}*)("\,"{espacio}* ({L}|{D}|{J}) {espacio}*)+ {return new Symbol(sym.CON, yychar, yyline, yytext());}
+({D}|{J} {espacio}*)("\,"{espacio}* ({D}|{L}|{J}) {espacio}*)+ {return new Symbol(sym.CON, yychar, yyline, yytext());}
 
 \n {yychar=1;}
 

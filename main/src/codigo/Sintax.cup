@@ -34,7 +34,7 @@ parser code
   
 :};
 
-terminal Llave_a, Llave_c, Conjunto, Guion, Mayor, D_puntos, Identificador,ERROR,Comilla_s,Com1,Com2,P_coma,Barra,Porcentaje,COMILLAS, Interrogacion,CON, PUNTO1, KLEENE, OR,SUMA,Oracion,Oracion2;
+terminal Llave_a, Llave_c, Conjunto,CON1, Guion, Mayor, D_puntos, Identificador,ERROR,Comilla_s,Com1,Com2,P_coma,Barra,Porcentaje,COMILLAS, Interrogacion,CON, PUNTO1, KLEENE, OR,SUMA,Oracion,Oracion2;
 non terminal INICIO,INI,INI2,EXPRESIONES,CONJUNTOS,FINAL,FINAL1,INI4,INI3,CREACION,ORACIONES;
 
 start with INICIO;
@@ -56,7 +56,7 @@ INI2::=
     |error INI2
 ;
 INI3::=
-Porcentaje Porcentaje INI4
+Porcentaje Porcentaje Porcentaje Porcentaje INI4
 
     |error INI3
 
@@ -70,7 +70,9 @@ ORACIONES FINAL1
 
 CONJUNTOS ::= CONJUNTOS Conjunto D_puntos Identificador:a Guion Mayor CON:b P_coma    {:resultados.addconj(a,b);:}
             |    Conjunto D_puntos Identificador:a  Guion Mayor CON:b P_coma    {:resultados.addconj(a,b);:}
-    |   CONJUNTOS  Identificador:y Guion Mayor CREACION:x P_coma {:main.Arbol(x.toString(),y.toString());:}
+ | CONJUNTOS Conjunto D_puntos Identificador:a Guion Mayor CON1:b P_coma    {:resultados.addconj2(a,b);:}
+            |    Conjunto D_puntos Identificador:a  Guion Mayor CON1:b P_coma    {:resultados.addconj2(a,b);:}
+    |   CONJUNTOS  Identificador:y Guion Mayor CREACION:x P_coma {:main.Arbol(x.toString(),y.toString());     resultados.addExpresiones(y,x);:}
     | Identificador:y Guion Mayor CREACION:x P_coma    {:main.Arbol(x.toString(),y.toString());:}
     
  
@@ -108,8 +110,8 @@ CREACION ::=
 
 ORACIONES ::=
 
-    ORACIONES Identificador D_puntos Oracion2 P_coma     
-    | Identificador D_puntos Oracion2 P_coma
+    ORACIONES Identificador:a D_puntos Oracion2:b P_coma      {:resultados.addOraciones(a,b);:}
+    | Identificador:a D_puntos Oracion2:b P_coma    {:resultados.addOraciones(a,b);:}
  
 ;
 

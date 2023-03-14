@@ -101,7 +101,7 @@ public class node {
                 break;
             case SUMA:
                 if(leftNode instanceof node){
-                    this.anullable = true;
+                    this.anullable = false;
                     this.first.addAll(((node)leftNode).first);
                     this.last.addAll(((node)leftNode).last);
                 }

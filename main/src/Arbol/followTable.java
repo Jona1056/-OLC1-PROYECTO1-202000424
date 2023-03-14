@@ -13,6 +13,8 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class followTable {
+      public ArrayList<ArrayList> datos;
+      public String datos2;
     public void append(int numNode, String lexeme, ArrayList flwList, ArrayList<ArrayList> table){
         for (ArrayList item : table){
             if( (int) item.get(0) == numNode && item.get(1) == lexeme ){
@@ -49,6 +51,8 @@ public class followTable {
     public void printTable(ArrayList<ArrayList> table){
         for(ArrayList item : table){
             System.out.println(item.get(0) + " - " + item.get(1) + " - " + item.get(2) );
+            datos2+=     "  <td>" + item.get(1) + "</td>\n" ;
+     
         }
     }
     
@@ -61,24 +65,31 @@ public class followTable {
  "               <tr>" +
  "               <td colspan=2>HOJA</td>"+
  "               <td colspan=2>SIGUIENTES</td>";
-              for (int i = 0; i < table.size(); i++) {
-        ArrayList item = table.get(i);
+          int aceptable = 0;
+              for(ArrayList item : table){
+                
         
         siguiente += "<tr>\n" +
                      "    <td>" + item.get(1) + "</td>\n" +
                      "    <td>" + item.get(0) + "</td>\n" +
                      "    <td>" + item.get(2) + "</td>\n" +
                      "</tr>\n";
-        
-        if (i == table.size() - 1) {
+        aceptable++;
+       /* if (i == table.size() - 1) {
             // Estás en el último elemento, agrega otros datos a "siguiente"
             siguiente += "<tr>\n" +
                          "    <td>#</td>\n" +
                          "    <td>"+item.get(2).toString()+"</td>\n" +
                          "    <td>--</td>\n" +
                          "</tr>\n";
-        }
+        }*/
     }
+              aceptable++;
+                siguiente += "<tr>\n" +
+                    "    <td>#</td>\n" +    
+                     "    <td>" + aceptable+ "</td>\n" +
+                  "    <td>--</td>\n" +
+                     "</tr>\n";
  
     
     
