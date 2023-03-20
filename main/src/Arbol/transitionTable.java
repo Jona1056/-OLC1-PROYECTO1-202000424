@@ -176,6 +176,7 @@ public class transitionTable {
     
     public void evaluar(ArrayList reglas, String cadena,String identificador){
 String estado = "S0";
+   
 boolean aceptado = true;
 int i = 0;
 String cadena1 = cadena.replace("\"", "");
@@ -274,6 +275,7 @@ while (i < cadena1.length() && aceptado) {
         i++;
     }
 } 
+CreateJson.main(identificador, cadena, aceptado);
 System.out.println("El resultado es " + aceptado);}
     public void impTable(){
         Transicion ="";

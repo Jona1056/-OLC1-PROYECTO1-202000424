@@ -5,8 +5,9 @@
 package Arbol;
 
 import java.util.ArrayList;
-
+import Arbol.CreateJson;
 import Arbol.node;
+import com.google.gson.JsonArray;
 
 /**
  *
@@ -17,7 +18,8 @@ public class main {
     public static void Arbol(String er,String identificador) {
          
         //String er = "...*|ababb"; //En esta er ocurre el bug
-        
+            CreateJson.result= new String();
+                 CreateJson.array = new JsonArray();
         ArrayList<node> leaves = new ArrayList();
         ArrayList<ArrayList> table = new ArrayList();
         
@@ -49,6 +51,7 @@ public class main {
     }
     
       public static void Datos(String er,String identificador,String oracion) {
+        
           System.out.println("EXPRESION: " + " " + er   + "nombre cadena" + " " +identificador);
            System.out.println("ORACION A EVALUAR"+ " "+ oracion);
              
@@ -63,6 +66,7 @@ public class main {
             transitionTable tran = new transitionTable(raiz, table, leaves); 
             tran.impTable();
             tran.evaluarcadena(oracion, identificador);
+          
      
       }
     

@@ -27,10 +27,11 @@ ene = ("\\n")
 
 STR = "\"" [^\"\n]+ "\""
 
-espacio=[ ,\t,\r,\n]+
+espacio=[ ,\t,\r]+
 ENTRADA =  [^!]
 
 %%
+\n {yychar=1;}
 {espacio} {}
 "//".* {}
 "<!" {ENTRADA}* "!>" {}
@@ -62,7 +63,7 @@ ENTRADA =  [^!]
 ({L}|{J} {espacio}*)("\,"{espacio}* ({L}|{D}|{J}) {espacio}*)+ {return new Symbol(sym.CON, yychar, yyline, yytext());}
 ({D}|{J} {espacio}*)("\,"{espacio}* ({D}|{L}|{J}) {espacio}*)+ {return new Symbol(sym.CON, yychar, yyline, yytext());}
 
-\n {yychar=1;}
+
 
 
 

@@ -18,9 +18,13 @@ n=("\\\"")+
 ñ=("\\\'")
 ene = ("\\n")
 ENTRADA =  [^!]
+%init{ 
+    yyline = 1; 
+    yychar = 1; 
+%init}
 
 STR = "\"" [^\"\n]+ "\""
-espacio=[ ,\t,\r,\n]+
+espacio=[ ,\t,\r]+
 %{
      private Symbol symbol(int type, Object value){
         return new Symbol(type, yyline, yycolumn, value);
@@ -33,6 +37,7 @@ espacio=[ ,\t,\r,\n]+
 
 
 /* Comentarios */
+\n {yychar=1;}
 {espacio} {}
 
 "//".* {}
@@ -111,5 +116,7 @@ espacio=[ ,\t,\r,\n]+
 
 {c}(  {S}|{L}|{n}|{ñ}|[^\"\n] ){c} {return new Symbol(sym.Oracion, yychar, yyline, yytext());}
 "\""([^\"\n]|{n}|{ñ} )+ "\"" {return new Symbol(sym.Oracion2, yychar, yyline, yytext());}
+
+
 /* Error de analisis */
- . {return new Symbol(sym.ERROR, yychar, yyline, yytext());}
+ . {return new Symbol(sym.ERROR, yyline, yychar, yytext());}

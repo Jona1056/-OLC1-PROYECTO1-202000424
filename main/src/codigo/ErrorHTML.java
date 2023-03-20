@@ -5,6 +5,7 @@
 package codigo;
 
 import static codigo.Errores.L_errores;
+import static codigo.Jframe.nombrearchivo1;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +19,7 @@ public class ErrorHTML {
     static String Errores;
      public static void main() {
         try {
-            PrintWriter writer = new PrintWriter("D:\\Desktop\\[OLC1]PROYECTO1-202000424\\main\\ERRORES_202000424\\ERRORES.html", "UTF-8");
+            PrintWriter writer = new PrintWriter("D:\\Desktop\\[OLC1]PROYECTO1-202000424\\main\\ERRORES_202000424\\"+nombrearchivo1 +".html", "UTF-8");
             writer.println("<!DOCTYPE html>\n" +
 "<html>\n" +
 "<head>\n" +
@@ -111,7 +112,7 @@ public class ErrorHTML {
      
      public static void Apertura() {
         // Ruta del archivo PDF
-        String rutaArchivo = "D:\\Desktop\\[OLC1]PROYECTO1-202000424\\main\\ERRORES_202000424\\ERRORES.html";
+        String rutaArchivo = "D:\\Desktop\\[OLC1]PROYECTO1-202000424\\main\\ERRORES_202000424\\"+nombrearchivo1+ ".html";
 
         // Verificar si Desktop es compatible con la plataforma actual
         if (!Desktop.isDesktopSupported()) {
