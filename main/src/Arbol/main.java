@@ -45,7 +45,11 @@ public class main {
         String afd =tran.impGraph();
         tran.AFD(afd, identificador);
         arbol.id = 0;
-        System.out.println(arbol.generateAFND(raiz));
+        arbol.label = "";
+    
+        String afn = arbol.genafnd(raiz);
+        System.out.println(afn);
+        arbol.printafnd(afn, identificador);
         
          //AQUI CREAMOS EL ARBOL EN GRAPHVIZ
          String Cadena = raiz.toGraphviz(identificador);

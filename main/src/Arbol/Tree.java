@@ -171,26 +171,45 @@ for (int i = 0; i < erSplit.length; i++) {
     public node getRoot(){
         return this.root;
     }
+    public String label = "";
+    public String genafnd(node root){
+        String label2 = "";
+        
+    
+        AFND(root);
+     label2 = "digraph G {\n"
+                + "rankdir=\"LR\"\n";
+         
+        label2 +=label;
+        label2+="}";
+        
+        return label2;
+        
+    }
     public  int id= 0;
     
-    public  String generateAFND(node root) {
-        String label = "";
-
+    public  String AFND(node root) {
+  
+        label = "";
         if (root == null) {
             return label;
         }
      
         switch (root.type.name()) {
             case "HOJA" -> {
+                if(root.lexeme == "#"){
+                    label += "S" + (id) + " [peripheries = 2];\n";
+                }else{
                 label += "S" + id;
                 id++;
                 label += " -> S" + id + "\n";
                 String lexem = root.lexeme.replace("\\n", "\"\n\"").replace("\\'", "\"\\'\"").replace("#","\"#\"");
                 label += "[label = " + lexem + " ];\n";
+                }
             }
             case "AND" -> { // Listo
-                label += generateAFND((node) root.left);
-                label += generateAFND((node) root.right);
+                label += AFND((node) root.left);
+                label += AFND((node) root.right);
             }
             case "OR" -> {
                 int auxOr = id;
@@ -198,13 +217,13 @@ for (int i = 0; i < erSplit.length; i++) {
                 id++;
                 label += " -> S" + id + "\n";
                 label += "[label = \"e\"];\n";
-                label += generateAFND((node) root.left);
+                label += AFND((node) root.left);
                 int auxleft = id;
                 label += "S" + auxOr;
                 id++;
                 label += " -> S" + id + "\n";
                 label += "[label = \"e\"];\n";
-                label += generateAFND((node) root.right);
+                label += AFND((node) root.right);
                 int auxright = id;
                 id++;
                 label += "S" + auxleft + " -> S" + id + "\n";
@@ -218,7 +237,7 @@ for (int i = 0; i < erSplit.length; i++) {
                 id++;
                 label += " -> " + "S" + id + "\n";
                 label += "[label = \"e\"];\n";
-                label += generateAFND((node) root.left);
+                label += AFND((node) root.left);
                 label += "S" + id + " -> " + "S" + auxPlus + "\n";
                 label += "[label = \"e\"];\n";
                 label += "S" + id;
@@ -233,7 +252,7 @@ for (int i = 0; i < erSplit.length; i++) {
                 id++;
                 label += " -> " + "S" + id + "\n";
                 label += "[label = \"e\"];\n";
-                label += generateAFND((node) root.left);
+                label += AFND((node) root.left);
                 label += "S" + id + " -> " + "S" + auxKleene + "\n";
                 label += "[label = \"e\"];\n";
                 label += "S" + id;
@@ -249,7 +268,7 @@ for (int i = 0; i < erSplit.length; i++) {
                 id++;
                 label += " -> " + "S" + id + "\n";
                 label += "[label = \"e\"];\n";
-                label += generateAFND((node) root.left);
+                label += AFND((node) root.left);
                 label += "S" + id;
                 id++;
                 label += " -> " + "S" + id + "\n";
@@ -261,6 +280,45 @@ for (int i = 0; i < erSplit.length; i++) {
             }
         }
         return label;
+    }
+    
+    public void printafnd(String cadena, String nombre){
+          try {
+            // Crear un proceso que ejecute el comando "dot"
+            ProcessBuilder pb = new ProcessBuilder("dot", "-Tpng");
+            pb.redirectErrorStream(true);
+            Process p = pb.start();
+
+            // Obtener los streams de entrada y salida del proceso
+            OutputStream os = p.getOutputStream();
+            InputStream is = p.getInputStream();
+
+            // Escribir el código Graphviz en el stream de entrada del proceso
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os));
+            writer.write(cadena);
+            writer.flush();
+            writer.close();
+            os.close();
+
+            // Leer la imagen desde el stream de salida del proceso
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = is.read(buffer)) != -1) {
+                baos.write(buffer, 0, bytesRead);
+            }
+            is.close();
+
+            // Guardar la imagen en un archivo
+            byte[] imageData = baos.toByteArray();
+            FileOutputStream fos = new FileOutputStream("D:\\Desktop\\[OLC1]PROYECTO1-202000424\\main\\AFND_202000424\\"+"AFND_"+nombre+".png");
+            fos.write(imageData);
+            fos.close();
+
+            System.out.println("Imagen AFD generada correctamente.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
     
