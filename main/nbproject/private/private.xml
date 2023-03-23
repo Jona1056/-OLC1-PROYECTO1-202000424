@@ -3,28 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Desktop/%5BOLC1%5DPROYECTO1-202000424/main/src/codigo/ErrorHTML.java</file>
-            <file>file:/D:/Desktop/%5BOLC1%5DPROYECTO1-202000424/main/src/Arbol/transitionTable.java</file>
-            <file>file:/D:/Desktop/%5BOLC1%5DPROYECTO1-202000424/main/src/codigo/Lexer.flex</file>
-            <file>file:/D:/Desktop/%5BOLC1%5DPROYECTO1-202000424/main/src/codigo/LexerCup.flex</file>
-            <file>file:/D:/Desktop/%5BOLC1%5DPROYECTO1-202000424/main/src/Arbol/type.java</file>
-            <file>file:/D:/Desktop/%5BOLC1%5DPROYECTO1-202000424/main/src/codigo/Principal.java</file>
-            <file>file:/D:/Desktop/%5BOLC1%5DPROYECTO1-202000424/main/src/codigo/Errores.java</file>
-            <file>file:/D:/Desktop/%5BOLC1%5DPROYECTO1-202000424/main/src/Arbol/ArrayList.java</file>
-            <file>file:/D:/Desktop/%5BOLC1%5DPROYECTO1-202000424/main/src/Arbol/main.java</file>
-            <file>file:/D:/Desktop/%5BOLC1%5DPROYECTO1-202000424/main/src/Arbol/followTable.java</file>
-            <file>file:/D:/Desktop/%5BOLC1%5DPROYECTO1-202000424/main/src/Arbol/leave.java</file>
-            <file>file:/D:/Desktop/%5BOLC1%5DPROYECTO1-202000424/main/src/codigo/resultados.java</file>
-            <file>file:/D:/Desktop/%5BOLC1%5DPROYECTO1-202000424/main/src/codigo/Sintax.java</file>
-            <file>file:/D:/Desktop/%5BOLC1%5DPROYECTO1-202000424/main/src/Arbol/Tree.java</file>
-            <file>file:/D:/Desktop/%5BOLC1%5DPROYECTO1-202000424/main/src/codigo/Sintax.cup</file>
-            <file>file:/D:/Desktop/%5BOLC1%5DPROYECTO1-202000424/main/src/codigo/Jframe.java</file>
-            <file>file:/D:/Desktop/%5BOLC1%5DPROYECTO1-202000424/main/src/Arbol/numLeave.java</file>
-            <file>file:/D:/Desktop/%5BOLC1%5DPROYECTO1-202000424/main/src/Arbol/transicion.java</file>
-            <file>file:/D:/Desktop/%5BOLC1%5DPROYECTO1-202000424/main/src/Arbol/node.java</file>
-            <file>file:/D:/Desktop/%5BOLC1%5DPROYECTO1-202000424/main/src/codigo/LexerCup.java</file>
-            <file>file:/D:/Desktop/%5BOLC1%5DPROYECTO1-202000424/main/src/codigo/Lexer.java</file>
-            <file>file:/D:/Desktop/%5BOLC1%5DPROYECTO1-202000424/main/src/Arbol/CreateJson.java</file>
+            <file>file:/D:/Desktop/-OLC1-PROYECTO1-202000424-main/main/src/Arbol/type.java</file>
+            <file>file:/D:/Desktop/-OLC1-PROYECTO1-202000424-main/main/src/Arbol/Tree.java</file>
+            <file>file:/D:/Desktop/-OLC1-PROYECTO1-202000424-main/main/src/Arbol/main.java</file>
+            <file>file:/D:/Desktop/-OLC1-PROYECTO1-202000424-main/main/src/Arbol/numLeave.java</file>
         </group>
     </open-files>
 </project-private>

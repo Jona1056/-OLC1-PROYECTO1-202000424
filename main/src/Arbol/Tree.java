@@ -171,6 +171,97 @@ for (int i = 0; i < erSplit.length; i++) {
     public node getRoot(){
         return this.root;
     }
+    public static int id= 0;
+    
+    public  String generateAFND(node root) {
+        String label = "";
+
+        if (root == null) {
+            return label;
+        }
+     
+        switch (root.type.name()) {
+            case "HOJA" -> {
+                label += "S" + id;
+                id++;
+                label += " -> S" + id + "\n";
+                String lexem = root.lexeme.replace("\\n", "\"\n\"").replace("\\'", "\"\\'\"").replace("#","\"#\"");
+                label += "[label = " + lexem + " ];\n";
+            }
+            case "AND" -> { // Listo
+                label += generateAFND((node) root.left);
+                label += generateAFND((node) root.right);
+            }
+            case "OR" -> {
+                int auxOr = id;
+                label += "S" + auxOr;
+                id++;
+                label += " -> S" + id + "\n";
+                label += "[label = \"e\"];\n";
+                label += generateAFND((node) root.left);
+                int auxleft = id;
+                label += "S" + auxOr;
+                id++;
+                label += " -> S" + id + "\n";
+                label += "[label = \"e\"];\n";
+                label += generateAFND((node) root.right);
+                int auxright = id;
+                id++;
+                label += "S" + auxleft + " -> S" + id + "\n";
+                label += "[label = \"e\"];\n";
+                label += "S" + auxright + " -> S" + id + "\n";
+                label += "[label = \"e\"];\n";
+            }
+            case "SUMA" -> {
+                int auxPlus = id + 1;
+                label += "S" + id;
+                id++;
+                label += " -> " + "S" + id + "\n";
+                label += "[label = \"e\"];\n";
+                label += generateAFND((node) root.left);
+                label += "S" + id + " -> " + "S" + auxPlus + "\n";
+                label += "[label = \"e\"];\n";
+                label += "S" + id;
+                id++;
+                label += " -> " + "S" + id + "\n";
+                label += "[label = \"e\"];\n";
+            }
+            case "KLEENE" -> {
+                int idKleene = id;
+                int auxKleene = id + 1;
+                label += "S" + id;
+                id++;
+                label += " -> " + "S" + id + "\n";
+                label += "[label = \"e\"];\n";
+                label += generateAFND((node) root.left);
+                label += "S" + id + " -> " + "S" + auxKleene + "\n";
+                label += "[label = \"e\"];\n";
+                label += "S" + id;
+                id++;
+                label += " -> " + "S" + id + "\n";
+                label += "[label = \"e\"];\n";
+                label += "S" + idKleene + " -> " + "S" + id + "\n";
+                label += "[label = \"e\"];\n";
+            }
+            case "INTE" -> {
+                int auxInterrogation = id;
+                label += "S" + id;
+                id++;
+                label += " -> " + "S" + id + "\n";
+                label += "[label = \"e\"];\n";
+                label += generateAFND((node) root.left);
+                label += "S" + id;
+                id++;
+                label += " -> " + "S" + id + "\n";
+                label += "[label = \"e\"];\n";
+                label += "S" + auxInterrogation + " -> " + "S" + id + "\n";
+                label += "[label = \"e\"];\n";
+            }
+            default -> {
+            }
+        }
+        return label;
+    }
     
     
     public void printArbol(String Cadena,String Nombre){

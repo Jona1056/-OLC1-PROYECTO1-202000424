@@ -32,6 +32,7 @@ public class main {
         raiz.follow();
         
         
+        
         System.out.println("==============================TABLA SIGUIENTES==============================");
         followTable ft = new followTable();
         ft.printTable(table);
@@ -43,7 +44,8 @@ public class main {
         System.out.println("============================= GRAPHVIZ===============================================");
         String afd =tran.impGraph();
         tran.AFD(afd, identificador);
-        
+        System.out.println(arbol.generateAFND(raiz));
+
          //AQUI CREAMOS EL ARBOL EN GRAPHVIZ
          String Cadena = raiz.toGraphviz(identificador);
          arbol.printArbol(Cadena,identificador);
