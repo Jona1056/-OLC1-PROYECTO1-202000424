@@ -171,7 +171,7 @@ for (int i = 0; i < erSplit.length; i++) {
     public node getRoot(){
         return this.root;
     }
-    public static int id= 0;
+    public  int id= 0;
     
     public  String generateAFND(node root) {
         String label = "";

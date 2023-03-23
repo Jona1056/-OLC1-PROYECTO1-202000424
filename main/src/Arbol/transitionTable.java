@@ -174,7 +174,7 @@ public class transitionTable {
     
     }
     
-    public void evaluar(ArrayList reglas, String cadena,String identificador){
+   public void evaluar(ArrayList reglas, String cadena,String identificador){
 String estado = "S0";
    
 boolean aceptado = true;
