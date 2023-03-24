@@ -33,58 +33,56 @@ public class transitionTable {
   
     
     public transitionTable(node root, ArrayList tabla, ArrayList<node> leaves) {
-          this.states = new ArrayList(); // are the states of the AFD
+        this.states = new ArrayList(); // estados del afd
 
-        ArrayList datos = new ArrayList(); // are the data of the states
+        ArrayList datos = new ArrayList();
         datos.add("S0");
         datos.add(root.first);
         datos.add(new ArrayList());
         datos.add(false);
-        //datos.add(new ArrayList());
+     
         int aceptacion = 0;
-        // graphs
-
-        // data save the first state, an arraylist and if is an accept state
+       
         this.states.add(datos);
         this.cont = 1;
 
-        for(int i = 0; i < states.size(); i++){ // iterate through the states
-            ArrayList state = states.get(i); // get the state
+        for (int i = 0; i < states.size(); i++) { 
+            ArrayList state = states.get(i); 
 
-            ArrayList<Integer> elementos = (ArrayList) state.get(1); // get the elements of the state
-            Map<String, ArrayList<Integer>> transiciones = new HashMap<>(); // are the transitions of the state
+            ArrayList<Integer> elementos = (ArrayList) state.get(1);
+            Map<String, ArrayList<Integer>> transiciones = new HashMap<>();
 
-            for(int hoja : elementos){
+            for (int hoja : elementos) {
                 followTable sigTabla = new followTable();
                 ArrayList lexemeNext = (ArrayList) sigTabla.next(hoja, tabla).clone();
 
-                if(lexemeNext.get(0) == ""){
+                if (lexemeNext.get(0) == "") {
                     continue;
                 }
 
                 ArrayList<Integer> sigEstados = transiciones.get(lexemeNext.get(0));
-                if(sigEstados == null){
+                if (sigEstados == null) {
                     sigEstados = new ArrayList<>();
-                    transiciones.put((String)lexemeNext.get(0), sigEstados);
+                    transiciones.put((String) lexemeNext.get(0), sigEstados);
                 }
-                sigEstados.addAll((ArrayList<Integer>)lexemeNext.get(1));
+                sigEstados.addAll((ArrayList<Integer>) lexemeNext.get(1));
 
-                leave hojas = new leave(); // here is the problem with accepted states
-      
+                leave hojas = new leave(); 
+
             }
 
-            for(Map.Entry<String, ArrayList<Integer>> entrada : transiciones.entrySet()){
+            for (Map.Entry<String, ArrayList<Integer>> entrada : transiciones.entrySet()) {
                 ArrayList<Integer> sigEstados = entrada.getValue();
 
                 String nombreEstadoSiguiente = null;
-                for(ArrayList estado : states){
-                    if(estado.get(1).equals(sigEstados)){
-                        nombreEstadoSiguiente = (String)estado.get(0);
+                for (ArrayList estado : states) {
+                    if (estado.get(1).equals(sigEstados)) {
+                        nombreEstadoSiguiente = (String) estado.get(0);
                         break;
                     }
                 }
 
-                if(nombreEstadoSiguiente == null){
+                if (nombreEstadoSiguiente == null) {
                     nombreEstadoSiguiente = "S" + cont;
                     cont++;
 
@@ -93,30 +91,24 @@ public class transitionTable {
                     nuevo.add(sigEstados);
                     nuevo.add(new ArrayList());
                     // evaluate if the number is in sigEstados
-                    if(sigEstados.contains(aceptacion)){
+                    if (sigEstados.contains(aceptacion)) {
                         nuevo.add(true);
-                     
-                    }else{
+
+                    } else {
                         nuevo.add(false);
                     }
-                    //nuevo.add(new ArrayList());
+                
                     states.add(nuevo);
-                    // add the accept state
-                    //System.out.println("nuevo: " + nuevo);
-
                 }
-
-               
-
                 transicion trans = new transicion(state.get(0) + "", entrada.getKey(), nombreEstadoSiguiente);
-                ((ArrayList)state.get(2)).add(trans);
-                //((ArrayList)state.get(4)).add(trans.toArray());
+                ((ArrayList) state.get(2)).add(trans);
+             
             }
         }
-        updateAcceptStates(states,leaves);
+        aceptacion(states, leaves);
     }
     
-    public void updateAcceptStates(ArrayList<ArrayList> states, ArrayList<node> leaves) {
+    public void aceptacion(ArrayList<ArrayList> states, ArrayList<node> leaves) {
     for(ArrayList state : states) {
         boolean acceptState = false;
         for(Integer leaf : (ArrayList<Integer>)state.get(1)) {
@@ -130,151 +122,156 @@ public class transitionTable {
 }
     public void evaluarcadena(String cadena, String nombre){
         int contador = 0;
-          evaluar = new ArrayList();
-         for(ArrayList state : states){
-             System.out.println("--------------------------------");
-              ArrayList<Object> dat = (ArrayList<Object>) state.get(2);
-               evaluar2 = new ArrayList();
-             for(Object state1: dat){
-             
-                 String cadena1 = state1.toString();
-                 cadena1 = cadena1.replace("->", "");
-            
-                 String[] palabras = cadena1.split("[\\s]+");
-             
-                 String x = state.get(3).toString();
-                  ArrayList<String> sublista = new ArrayList<>(Arrays.asList(palabras));
-                  System.out.println(sublista);
-                  sublista.add(x);
-                  evaluar2.add(sublista);
-           
-             }
-             evaluar.add(evaluar2);
-             if (contador == states.size()-1){
-                 ArrayList<String> sublista1 = new ArrayList<>();
-                 String x1 = "S"+contador;
-                 sublista1.add(x1);
-                 sublista1.add("true");
-                 sublista1.add("true");
-                  sublista1.add("true");
+        evaluar = new ArrayList();
+        for (ArrayList state : states) {
+            System.out.println("--------------------------------");
+            ArrayList<Object> dat = (ArrayList<Object>) state.get(2);
+            evaluar2 = new ArrayList();
+            for (Object state1 : dat) {
 
-                 evaluar2.add(sublista1);
-             }
-          
-   
-             contador++;
-    }
-         for(ArrayList evalu: evaluar){
-             System.out.println(evalu);
-         }
-         evaluar(evaluar,cadena,nombre);
-         
-        
-         
-    
+                String cadena1 = state1.toString();
+                cadena1 = cadena1.replace("->", "");
+
+                String[] palabras = cadena1.split("[\\s]+");
+
+                String x = state.get(3).toString();
+                ArrayList<String> sublista = new ArrayList<>(Arrays.asList(palabras));
+
+                sublista.add(x);
+                evaluar2.add(sublista);
+
+            }
+            evaluar.add(evaluar2);
+            if (contador == states.size() - 1) {
+                ArrayList<String> sublista1 = new ArrayList<>();
+                String x1 = "S" + contador;
+                sublista1.add(x1);
+                sublista1.add("true");
+                sublista1.add("true");
+                sublista1.add("true");
+
+                evaluar2.add(sublista1);
+            }
+
+            contador++;
+        }
+        for (ArrayList evalu : evaluar) {
+            System.out.println(evalu);
+        }
+        evaluar(evaluar, cadena, nombre);
+
     }
     
    public void evaluar(ArrayList reglas, String cadena,String identificador){
-String estado = "S0";
-   
-boolean aceptado = true;
-int i = 0;
-String cadena1 = cadena.replace("\"", "");
-System.out.println(cadena1);
-        System.out.println(cadena);
-while (i < cadena1.length() && aceptado) {
-    char caracter = cadena1.charAt(i);
-       if (caracter == ' ') {
-        i++;
-        continue;
-    }
-    String carac = String.valueOf(caracter);
+       String estado = "S0";
 
-    if (carac.equals("\\")) {
-        // Si se encuentra un backslash, se avanza una posición en la cadena
-        i++;
-        carac += cadena1.charAt(i);
-    }
-    System.out.println(carac);
+       boolean aceptado = true;
+       int i = 0;
+       String cadena1 = cadena;
+       cadena1 = cadena1.substring(1, cadena1.length() - 1);
 
-    boolean avanzar_regla = true;
-    for (Object evalu : reglas) {
-        ArrayList ar = (ArrayList) evalu;
-        if (!avanzar_regla) {
-            break;
-        }
-        for (Object reg : ar) {
-            String estado_inicial = ((ArrayList) reg).get(0).toString();
-            String estado_final = ((ArrayList) reg).get(2).toString();
-            String aceptado_str = ((ArrayList) reg).get(3).toString();
-            String conjunto = ((ArrayList) reg).get(1).toString();
-            boolean aceptado_regla = Boolean.parseBoolean(aceptado_str);
-            if (estado.equals(estado_inicial)) {
-                System.out.println("el estado es " + estado_inicial);
-                if (conjunto.contains("\"")) {
-                    String conjunto_sin_comillas = conjunto.replace("\"", "");
-                    System.out.println(carac + " " + conjunto_sin_comillas);
-                    if (carac.equals(conjunto_sin_comillas)) {
-                        estado = estado_final;
-                        System.out.println(estado);
-                        avanzar_regla = false;
-                        break;
-                    }
-                }else if(conjunto.equals("\\'")) {
-                    
-                     if (carac.equals(conjunto)) {
-                       estado = estado_final;
-                      System.out.println(estado);
-                         avanzar_regla = false;
-                     break;
-                        }
-                }
-                
-                else {
-                    boolean perteneceAlConjunto = false;
-                    String conjunto1 = resultados.buscarconjunto(conjunto);
-                    
-                    if(conjunto1 == null){
-                        
-                    }else{
-                    if (conjunto1.contains(",")) {
-                        String[] elementos = conjunto1.split(",");
-                        for (String elem : elementos) {
-                            if (carac.equals(elem)) {
-                                System.out.println(carac);
-                                perteneceAlConjunto = true;
-                                break;
-                            }
-                        }
-                    } else {
-                        char inicio = conjunto1.charAt(0);
-                        char fin = conjunto1.charAt(2);
-                        char c = carac.charAt(0);
-                        if (c >= inicio && c <= fin) {
-                            perteneceAlConjunto = true;
-                        }
-                    }
-                    }
-                    if (perteneceAlConjunto) {
-                        estado = estado_final;
-                        avanzar_regla = false;
-                        if (estado_inicial.equals(estado_final)) {
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-        if (!avanzar_regla) {
-            break;
-        }
-    }
-    if (avanzar_regla) {
-        aceptado = false;
-    } else {
-        i++;
-    }
-} 
+       System.out.println(cadena);
+       while (i < cadena1.length() && aceptado) {
+           char caracter = cadena1.charAt(i);
+           if (caracter == ' ') {
+               i++;
+               continue;
+           }
+           String carac = String.valueOf(caracter);
+
+           if (carac.equals("\\")) {
+               // Si se encuentra un backslash, se avanza una posición en la cadena
+               i++;
+               carac += cadena1.charAt(i);
+           }
+
+           boolean avanzar_regla = true;
+           for (Object evalu : reglas) {
+               ArrayList ar = (ArrayList) evalu;
+               if (!avanzar_regla) {
+                   break;
+               }
+               for (Object reg : ar) {
+                   String estado_inicial = ((ArrayList) reg).get(0).toString();
+                   String estado_final = ((ArrayList) reg).get(2).toString();
+                   String aceptado_str = ((ArrayList) reg).get(3).toString();
+                   String conjunto = ((ArrayList) reg).get(1).toString();
+                   boolean aceptado_regla = Boolean.parseBoolean(aceptado_str);
+
+                   if (estado.equals(estado_inicial)) {
+                       System.out.println("el estado es " + estado_inicial);
+                       if (conjunto.contains("\"")) {
+                           if (conjunto.equals("\\\"")) {
+                               if (carac.equals(conjunto)) {
+                                   estado = estado_final;
+                                   System.out.println(estado);
+                                   avanzar_regla = false;
+                                   break;
+                               }
+                           } else {
+
+                               String conjunto_sin_comillas = conjunto.replace("\"", "");
+
+                               if (carac.equals(conjunto_sin_comillas)) {
+                                   estado = estado_final;
+                                   System.out.println(estado);
+                                   avanzar_regla = false;
+                                   break;
+                               }
+                           }
+                       } else if (conjunto.equals("\\'") || conjunto.equals("\\\"")) {
+
+                           if (carac.equals(conjunto)) {
+                               estado = estado_final;
+                               System.out.println(estado);
+                               avanzar_regla = false;
+                               break;
+                           }
+                       } else {
+                           boolean perteneceAlConjunto = false;
+                           String conjunto1 = resultados.buscarconjunto(conjunto);
+
+                           if (conjunto1 == null) {
+
+                           } else {
+                               if (conjunto1.contains(",")) {
+                                   String[] elementos = conjunto1.split(",");
+                                   for (String elem : elementos) {
+                                       if (carac.equals(elem)) {
+                                           System.out.println(carac);
+                                           perteneceAlConjunto = true;
+                                           break;
+                                       }
+                                   }
+                               } else {
+                                   char inicio = conjunto1.charAt(0);
+                                   char fin = conjunto1.charAt(2);
+                                   char c = carac.charAt(0);
+                                   if (c >= inicio && c <= fin) {
+                                       perteneceAlConjunto = true;
+                                   }
+                               }
+                           }
+                           if (perteneceAlConjunto) {
+                               estado = estado_final;
+                               avanzar_regla = false;
+                               if (estado_inicial.equals(estado_final)) {
+                                   break;
+                               }
+                           }
+                       }
+                   }
+               }
+               if (!avanzar_regla) {
+                   break;
+               }
+           }
+           if (avanzar_regla) {
+               aceptado = false;
+           } else {
+               i++;
+           }
+       }
 CreateJson.main(identificador, cadena, aceptado);
 System.out.println("El resultado es " + aceptado);}
     public void impTable(){
@@ -405,7 +402,9 @@ Transicion+
         }}
          for(ArrayList state : states){  
                     String label = state.get(0).toString();
+               
         for(Object tr : (ArrayList)state.get(2)){
+          
        
             transicion t = (transicion) tr;
             graph += t.graph();

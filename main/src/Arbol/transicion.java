@@ -33,8 +33,18 @@ public class transicion {
     
     public String graph(){
           String x;
+               x = this.transition.replaceAll("\"", "");
+         if(x.equals("\\\'")){
+             x= "\\\\\'";
+         }else if(x.equals("\\n")){
+             x= "\\\\n";
+         }else if(x.equals("\\")){
+                x= "\\\\\\\"";
+         }
+        
      
-        x = this.transition.replaceAll("\"", "");
+  
+          System.out.println(x);
         return this.initialState +  "->"  + this.finalState + "[label=\"" + x + "\"]";
     }
 

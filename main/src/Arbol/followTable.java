@@ -13,14 +13,16 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class followTable {
-      public ArrayList<ArrayList> datos;
-      public String datos2;
-    public void append(int numNode, String lexeme, ArrayList flwList, ArrayList<ArrayList> table){
-        for (ArrayList item : table){
-            if( (int) item.get(0) == numNode && item.get(1) == lexeme ){
-                for (Object flwItem : flwList){
-                    if(! ((ArrayList)item.get(2)).contains((int)flwItem) ){
-                       ((ArrayList)item.get(2)).add(flwItem);
+
+    public ArrayList<ArrayList> datos;
+    public String datos2;
+
+    public void append(int numNode, String lexeme, ArrayList flwList, ArrayList<ArrayList> table) { //creacion tabl siguientes
+        for (ArrayList item : table) {
+            if ((int) item.get(0) == numNode && item.get(1) == lexeme) {
+                for (Object flwItem : flwList) {
+                    if (!((ArrayList) item.get(2)).contains((int) flwItem)) {
+                        ((ArrayList) item.get(2)).add(flwItem);
                     }
                 }
                 return;
@@ -30,7 +32,7 @@ public class followTable {
         dato.add(numNode);
         dato.add(lexeme);
         dato.add(flwList);
-        
+
         table.add(dato);
     }
     

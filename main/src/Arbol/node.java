@@ -166,14 +166,18 @@ private void buildGraphvizTree(node node, int[] identifier, StringBuilder graphv
         String idNode = "node" + identifier[0]; // a identifier for the node
         String T;
         String x = node.lexeme.toString();
-         if (x == "\\\'"){
-            T = "\\\'";
-        }else if(x == "\\n"){
-            T = "\\n";
-        }else if (x == "\\\""){
-            T = "\\\"";
-        }
+       
+   
           T= x.replaceAll("\"", "");
+         if(T.equals("\\\'")){
+             T= "\\\\\'";
+         }else if(T.equals("\\n")){
+             T = "\\\\n";
+         }else if(T.equals("\\")){
+                T= "\\\\\\\"";
+         }
+                 
+
        
         //graphviz += idNode    + " [label=\"" + node.lexeme + "\"];\n"; // add the node to the graphviz string
         graphviz.append(idNode).append(" [label=\"").append(T).append("\n"+"Anulable: "+node.anullable).append("\n"+"First"+node.first).append("\n"+"Last"+node.last).append("\"];\n");

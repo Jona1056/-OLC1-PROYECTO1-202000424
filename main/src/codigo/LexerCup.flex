@@ -14,7 +14,7 @@ D=[0-9]+
 c=[\"]
 S=[!-}]+
 J=[ -/:-@\[-`{-}]
-n=("\\\"")+
+n=("\\\"")
 ñ=("\\\'")
 ene = ("\\n")
 ENTRADA =  [^!]
@@ -47,6 +47,7 @@ espacio=[ ,\t,\r]+
 
 {ñ} {return new Symbol(sym.Com1,yyline,yychar, yytext());} 
 {ene} {return new Symbol(sym.Com2,yyline,yychar, yytext());} 
+{n} {return new Symbol(sym.Com3,yyline,yychar, yytext());} 
 /* CONJUNTO*/
 ( "CONJ" ) {return new Symbol(sym.Conjunto, yychar, yyline, yytext());}
 

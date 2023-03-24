@@ -17,7 +17,7 @@ c=[\"]+
 
 S=[!-}]
 J=[ -/:-@\[-`{-}]
-n=("\\\"")+
+n=("\\\"")
 ñ=("\\\'")
 ene = ("\\n")
 %init{ 
@@ -39,6 +39,7 @@ ENTRADA =  [^!]
 "CONJ" {return new Symbol(sym.Conjunto,yyline,yychar, yytext());} 
 {ene} {return new Symbol(sym.Com2,yyline,yychar, yytext());} 
 {ñ} {return new Symbol(sym.Com1,yyline,yychar, yytext());} 
+{n} {return new Symbol(sym.Com3,yyline,yychar, yytext());} 
 "%" {return new Symbol(sym.Porcentaje,yyline,yychar, yytext());} 
 ":" {return new Symbol(sym.D_puntos,yyline,yychar, yytext());} 
 ";" {return new Symbol(sym.P_coma,yyline,yychar, yytext());} 

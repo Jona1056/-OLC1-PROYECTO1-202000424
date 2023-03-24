@@ -18,61 +18,50 @@ public class main {
     public static void Arbol(String er,String identificador) {
          
         //String er = "...*|ababb"; //En esta er ocurre el bug
-            CreateJson.result= new String();
-                 CreateJson.array = new JsonArray();
+        CreateJson.result = new String();
+        CreateJson.array = new JsonArray();
         ArrayList<node> leaves = new ArrayList();
         ArrayList<ArrayList> table = new ArrayList();
-        
         er = "." + er + "#";
-        
         Tree arbol = new Tree(er, leaves, table); // CREA EL ARBOL
         node raiz = arbol.getRoot();
-        
         raiz.getNode(); // DETERMINA SI LOS NODOS SON ANULABLES, SUS PRIMEROS Y ULTIMOS
         raiz.follow();
-        
-        
-        
         System.out.println("==============================TABLA SIGUIENTES==============================");
         followTable ft = new followTable();
         ft.printTable(table);
         ft.printHtmlTable(table, identificador);
-        transitionTable tran = new transitionTable(raiz, table, leaves); 
+        transitionTable tran = new transitionTable(raiz, table, leaves);
         System.out.println("=============================TABLA TRANSICIONES=============================");
         tran.impTable();
         tran.HTMLTransicion(identificador);
         System.out.println("============================= GRAPHVIZ===============================================");
-        String afd =tran.impGraph();
+        String afd = tran.impGraph();
         tran.AFD(afd, identificador);
         arbol.id = 0;
         arbol.label = "";
-    
         String afn = arbol.genafnd(raiz);
-        System.out.println(afn);
         arbol.printafnd(afn, identificador);
-        
-         //AQUI CREAMOS EL ARBOL EN GRAPHVIZ
-         String Cadena = raiz.toGraphviz(identificador);
-         arbol.printArbol(Cadena,identificador);
+        //AQUI CREAMOS EL ARBOL EN GRAPHVIZ
+        String Cadena = raiz.toGraphviz(identificador);
+        arbol.printArbol(Cadena, identificador);
        
     }
     
       public static void Datos(String er,String identificador,String oracion) {
         
-          System.out.println("EXPRESION: " + " " + er   + "nombre cadena" + " " +identificador);
-           System.out.println("ORACION A EVALUAR"+ " "+ oracion);
-             
-            ArrayList<node> leaves = new ArrayList();
-            ArrayList<ArrayList> table = new ArrayList();
-            er = "." + er + "#";
-            Tree arbol = new Tree(er, leaves, table); // CREA EL ARBOL
-            node raiz = arbol.getRoot();
-        
-            raiz.getNode(); // DETERMINA SI LOS NODOS SON ANULABLES, SUS PRIMEROS Y ULTIMOS
-            raiz.follow();
-            transitionTable tran = new transitionTable(raiz, table, leaves); 
-            tran.impTable();
-            tran.evaluarcadena(oracion, identificador);
+          System.out.println("EXPRESION: " + " " + er + "nombre cadena" + " " + identificador);
+          System.out.println("ORACION A EVALUAR" + " " + oracion);
+          ArrayList<node> leaves = new ArrayList();
+          ArrayList<ArrayList> table = new ArrayList();
+          er = "." + er + "#";
+          Tree arbol = new Tree(er, leaves, table); // CREA EL ARBOL
+          node raiz = arbol.getRoot();
+          raiz.getNode(); // DETERMINA SI LOS NODOS SON ANULABLES, SUS PRIMEROS Y ULTIMOS
+          raiz.follow();
+          transitionTable tran = new transitionTable(raiz, table, leaves);
+          tran.impTable();
+          tran.evaluarcadena(oracion, identificador);
           
      
       }
